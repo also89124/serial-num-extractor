@@ -1,0 +1,67 @@
+================================================
+HOW TO BUILD A SINGLE .EXE FILE
+================================================
+
+OPTION 1: Easy Method (Double-click)
+-------------------------------------
+1. Double-click: build_exe.bat
+2. Wait 5-10 minutes for the build to complete
+3. Find your executable in: dist\TechnohullSerialExtractor.exe
+
+OPTION 2: Manual Method (Command Line)
+---------------------------------------
+1. Open PowerShell or Command Prompt
+2. Navigate to this folder:
+   cd "c:\Users\MixalisVroutsis\Documents\Visual Studio Programs\serial numbers extractor"
+3. Run: python build_exe.py
+4. Wait for completion
+5. Find your executable in: dist\TechnohullSerialExtractor.exe
+
+================================================
+REQUIREMENTS
+================================================
+- Python must be installed
+- All dependencies must be installed (run requirements.txt)
+- Internet connection (for PyInstaller installation)
+
+================================================
+DISTRIBUTING THE .EXE
+================================================
+Once built, you can:
+✓ Copy TechnohullSerialExtractor.exe to any Windows PC
+✓ No Python installation needed on target PC
+✓ No dependencies needed on target PC
+✓ Just double-click and run!
+
+File Size: ~500MB (includes Python + EasyOCR + models)
+First Run: May take 10-30 seconds to start (one-time OCR model setup)
+
+================================================
+TROUBLESHOOTING
+================================================
+If build fails:
+1. Install PyInstaller: pip install pyinstaller
+2. Make sure all dependencies installed: pip install -r requirements.txt
+3. Check that assets/app_icon.ico exists
+4. Run: pyinstaller --version (to verify installation)
+
+If .exe doesn't run:
+1. Check Windows Defender/Antivirus (may block new .exe files)
+2. Run as Administrator
+3. Make sure OCR models downloaded (first run only)
+
+================================================
+TECHNICAL DETAILS
+================================================
+Build Command:
+pyinstaller --onefile --windowed --name=TechnohullSerialExtractor --icon=assets/app_icon.ico --add-data=assets;assets device_ocr_extractor.py
+
+What gets included:
+- Python interpreter
+- All Python libraries (tkinter, PIL, easyocr, torch, etc.)
+- EasyOCR models
+- App icon and assets
+- Your program code
+
+Build time: 5-10 minutes
+Final .exe size: ~500MB
