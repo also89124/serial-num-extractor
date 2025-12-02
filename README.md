@@ -1,12 +1,12 @@
-# 🚢 Marine Device Serial Number Extractor# 🚢 Marine Device Serial Number Extractor - Complete Package
+# Marine Device Serial Number Extractor# 🚢 Marine Device Serial Number Extractor - Complete Package
 
 
 
-**✨ NO INSTALLATION NEEDED! ✨**Extract serial numbers from marine device screenshots automatically!
+** NO INSTALLATION NEEDED! **Extract serial numbers from marine device screenshots automatically!
 
 
 
-Extract device names and serial numbers from screenshots - just run and upload!## 📦 What You Get
+Extract device names and serial numbers from screenshots - just run and upload!##  What You Get
 
 
 
@@ -14,49 +14,49 @@ Extract device names and serial numbers from screenshots - just run and upload!#
 
 
 
-## 🚀 How to Use (3 Easy Steps)### 1. 🖼️ OCR Image Extractor (NEW!) - **Recommended**
+## How to Use (3 Easy Steps)### 1. OCR Image Extractor (NEW!) - **Recommended**
 
 **Upload screenshots → Automatic extraction → Custom filename export**
 
 ### Step 1: Run the Program
 
-**Double-click:** `run_ocr_extractor.bat`- ✅ **device_ocr_extractor.py** - Upload device list photos
+**Double-click:** `run_ocr_extractor.bat`-  **device_ocr_extractor.py** - Upload device list photos
 
-- ✅ **run_ocr_extractor.bat** - Quick launcher
+-  **run_ocr_extractor.bat** - Quick launcher
 
-### Step 2: Extract Devices- ✅ Works with photos from Axiom screens
+### Step 2: Extract Devices-  Works with photos from Axiom screens
 
-1. Click **"Upload Image"** 📁- ✅ User-friendly GUI interface
+1. Click **"Upload Image"** - User-friendly GUI interface
 
-2. Select your screenshot- ✅ Name your output file anything you want!
+2. Select your screenshot-  Name your output file anything you want!
 
-3. Click **"Extract Devices"** 🔍  
+3. Click **"Extract Devices"**   
 
-   *(First time: waits 10-30 seconds to load OCR)*### 2. 📄 File Parser (Original)
+   *(First time: waits 10-30 seconds to load OCR)*### 2.  File Parser (Original)
 
 4. Review devices in the table**Parse CZone/Empirbus export files → Extract data → Save results**
 
 
 
-### Step 3: Save Results- ✅ **serial_extractor.py** - Parse CZone/Empirbus files
+### Step 3: Save Results-  **serial_extractor.py** - Parse CZone/Empirbus files
 
-1. Click **"Export to TXT"** 💾- ✅ **extract.bat** - Quick launcher
+1. Click **"Export to TXT"**   **extract.bat** - Quick launcher
 
-2. Type your filename (e.g., "MyBoat_Devices")- ✅ Supports .czd, .xml, .json, .csv files
+2. Type your filename (e.g., "MyBoat_Devices")-  Supports .czd, .xml, .json, .csv files
 
-3. Click Save ✅
+3. Click Save 
 
 ---
 
 **Done! No Tesseract, no installation, no hassle!**
 
-## 🚀 QUICK START - OCR Version (Most Popular)
+##  QUICK START - OCR Version (Most Popular)
 
 ---
 
 ### Step 1: One-Time Setup
 
-## 📸 Get Your ScreenshotInstall Tesseract OCR:
+##  Get Your ScreenshotInstall Tesseract OCR:
 
 ```powershell
 
@@ -74,29 +74,29 @@ Extract device names and serial numbers from screenshots - just run and upload!#
 
 ### Step 3: Extract Devices
 
-**Tips:**1. Click **"Upload Image"** 📁
+**Tips:**1. Click **"Upload Image"** 
 
-- ✅ Clear, sharp image2. Select your screenshot
+-  Clear, sharp image2. Select your screenshot
 
-- ✅ Good lighting3. Click **"Extract Devices"** 🔍
+-  Good lighting3. Click **"Extract Devices"** 
 
-- ✅ Straight angle4. Click **"Export to TXT"** 💾
+-  Straight angle4. Click **"Export to TXT"** 
 
-- ✅ High resolution (1920x1080+)5. Name your file (e.g., "MyBoat_Devices") ✏️
+-  High resolution (1920x1080+)5. Name your file (e.g., "MyBoat_Devices") 
 
-6. Done! ✅
+6. Done! 
 
 ---
 
 **That's it!** Your device list with serial numbers is saved.
 
-## 📝 What Gets Extracted
+##  What Gets Extracted
 
 ---
 
 From your screenshot:
 
-```## 📸 How to Take Screenshots
+```##  How to Take Screenshots
 
 1. AXIOM 2 PRO 12 RVM E70656
 
@@ -118,11 +118,11 @@ From your screenshot:
 
 ---
 
-✅ Device names  
+ Device names  
 
-✅ Product codes  ## 📚 Documentation Files
+ Product codes  ##  Documentation Files
 
-✅ Serial numbers  
+ Serial numbers  
 
 | File | Purpose |
 
@@ -130,7 +130,7 @@ From your screenshot:
 
 | **QUICKSTART.md** | Fast 2-minute setup guide |
 
-## ⏱️ First Time Use| **README_OCR.md** | Complete OCR program manual |
+##  First Time Use| **README_OCR.md** | Complete OCR program manual |
 
 | **PROGRAM_INFO.txt** | Program summary and features |
 
@@ -142,15 +142,15 @@ From your screenshot:
 
 ---
 
-**After that, it's instant!** 🚀
+**After that, it's instant!** 
 
-## 💡 Which Program Should I Use?
+##  Which Program Should I Use?
 
 *(Model saves to your PC, works offline forever)*
 
 ### Use **OCR Extractor** if you:
 
----- ✅ Have a photo/screenshot of device list
+----✅ Have a photo/screenshot of device list
 
 - ✅ Use Raymarine Axiom or similar display
 
