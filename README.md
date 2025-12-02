@@ -1,6 +1,6 @@
 # Technohull Marine Device Serial Number Extractor
 
-**Professional Marine Electronics Documentation Solution**
+**Marine Electronics Documentation Solution**
 
 The Technohull Marine Device Serial Number Extractor is an enterprise-grade software application designed to streamline the documentation and inventory management of marine electronic equipment. This solution enables maritime professionals to efficiently extract, catalog, and manage device information from digital sources.
 
@@ -23,7 +23,7 @@ This application provides automated optical character recognition (OCR) capabili
 - `device_ocr_extractor.py` - Main application executable
 - `run_ocr_extractor.bat` - Quick launch utility
 - Supports PNG, JPG, BMP, TIFF image formats
-- Dark mode professional interface
+- Dark mode interface
 
 ---
 
@@ -450,5 +450,5 @@ For technical assistance, deployment guidance, or licensing inquiries, consult y
 ---
 
 **Technohull Marine Device Serial Number Extractor**  
-*Professional Marine Electronics Documentation Solution*  
-*Version 1.0 - December 2025*
+*Electronics Documentation Solution*  
+*Version 1.1 - December 2025*
