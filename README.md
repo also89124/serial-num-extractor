@@ -1,465 +1,454 @@
-# Marine Device Serial Number Extractor# 🚢 Marine Device Serial Number Extractor - Complete Package
+# Technohull Marine Device Serial Number Extractor
 
+**Professional Marine Electronics Documentation Solution**
 
-
-** NO INSTALLATION NEEDED! **Extract serial numbers from marine device screenshots automatically!
-
-
-
-Extract device names and serial numbers from screenshots - just run and upload!##  What You Get
-
-
-
----This package includes **TWO programs**:
-
-
-
-## How to Use (3 Easy Steps)### 1. OCR Image Extractor (NEW!) - **Recommended**
-
-**Upload screenshots → Automatic extraction → Custom filename export**
-
-### Step 1: Run the Program
-
-**Double-click:** `run_ocr_extractor.bat`-  **device_ocr_extractor.py** - Upload device list photos
-
--  **run_ocr_extractor.bat** - Quick launcher
-
-### Step 2: Extract Devices-  Works with photos from Axiom screens
-
-1. Click **"Upload Image"** - User-friendly GUI interface
-
-2. Select your screenshot-  Name your output file anything you want!
-
-3. Click **"Extract Devices"**   
-
-   *(First time: waits 10-30 seconds to load OCR)*### 2.  File Parser (Original)
-
-4. Review devices in the table**Parse CZone/Empirbus export files → Extract data → Save results**
-
-
-
-### Step 3: Save Results-  **serial_extractor.py** - Parse CZone/Empirbus files
-
-1. Click **"Export to TXT"**   **extract.bat** - Quick launcher
-
-2. Type your filename (e.g., "MyBoat_Devices")-  Supports .czd, .xml, .json, .csv files
-
-3. Click Save 
+The Technohull Marine Device Serial Number Extractor is an enterprise-grade software application designed to streamline the documentation and inventory management of marine electronic equipment. This solution enables maritime professionals to efficiently extract, catalog, and manage device information from digital sources.
 
 ---
 
-**Done! No Tesseract, no installation, no hassle!**
+## Overview
 
-##  QUICK START - OCR Version (Most Popular)
+This application provides automated optical character recognition (OCR) capabilities for extracting device information from screenshots and display images. The system is designed for use with Raymarine Axiom, CZone, and other marine electronics management systems.
+
+### Key Capabilities
+
+**Primary Function: OCR Image Processing**
+- Automated text recognition from device list screenshots
+- GUI-based interface for streamlined workflow
+- Batch processing support for multiple devices
+- Custom export formatting options
+- Real-time preview and verification
+
+**Core Components**
+- `device_ocr_extractor.py` - Main application executable
+- `run_ocr_extractor.bat` - Quick launch utility
+- Supports PNG, JPG, BMP, TIFF image formats
+- Dark mode professional interface
 
 ---
 
-### Step 1: One-Time Setup
+## Getting Started
 
-##  Get Your ScreenshotInstall Tesseract OCR:
+### System Requirements
 
+**Operating Environment**
+- Windows 10/11 (64-bit)
+- Python 3.8 or higher
+- 4 GB RAM minimum (8 GB recommended)
+- 2 GB available disk space
+- Display resolution: 1920x1080 or higher
+
+**Software Dependencies**
+- EasyOCR (automatically installed)
+- PyTorch framework
+- PIL/Pillow image processing library
+- Tkinter GUI framework (included with Python)
+
+### Installation Procedure
+
+**Step 1: Launch Application**
+Execute `run_ocr_extractor.bat` to start the application.
+
+**Step 2: First-Time Setup**
+Initial launch will automatically install required dependencies. This process takes approximately 2-5 minutes and occurs only once.
+
+**Step 3: Operational Use**
+1. Select "Upload Image" to load source material
+2. Choose device screenshot or photograph
+3. Click "Extract Devices" to initiate OCR processing
+4. Review extracted data in tabular format
+5. Assign device types using dropdown selectors
+6. Select devices for export via checkboxes
+7. Click "Export to TXT" to generate output file
+8. Specify filename (format: SN_[SAP].txt)
+
+---
+
+## Installation and Configuration
+
+### Prerequisites
+
+**Python Environment**
+Verify Python installation:
 ```powershell
-
-### From Raymarine Axiom 2 Pro:winget install UB-Mannheim.Tesseract
-
-1. Navigate to: **Settings → Network**```
-
-2. You'll see the device list
-
-3. Take a photo with your phone### Step 2: Run Program
-
-4. Transfer to PC (email, USB, cloud)**Double-click:** `run_ocr_extractor.bat`
-
-5. Upload to program!
-
-### Step 3: Extract Devices
-
-**Tips:**1. Click **"Upload Image"** 
-
--  Clear, sharp image2. Select your screenshot
-
--  Good lighting3. Click **"Extract Devices"** 
-
--  Straight angle4. Click **"Export to TXT"** 
-
--  High resolution (1920x1080+)5. Name your file (e.g., "MyBoat_Devices") 
-
-6. Done! 
-
----
-
-**That's it!** Your device list with serial numbers is saved.
-
-##  What Gets Extracted
-
----
-
-From your screenshot:
-
-```##  How to Take Screenshots
-
-1. AXIOM 2 PRO 12 RVM E70656
-
-   Serial Number: TA22ZKB### From Raymarine Axiom 2 Pro:
-
-1. Go to: **Settings → Network**
-
-2. Quantum 2 Doppler E704982. Take a photo with your phone
-
-   Serial Number: 12404303. Transfer to PC
-
-4. Upload to program
-
-3. Raymarine Ray53 VHF E70524
-
-   Serial Number: 1121883**See SCREENSHOT_GUIDE.txt for detailed instructions**
-
+python --version
 ```
+Required version: Python 3.8 or higher
 
----
+### Dependency Installation
 
- Device names  
-
- Product codes  ##  Documentation Files
-
- Serial numbers  
-
-| File | Purpose |
-
----|------|---------|
-
-| **QUICKSTART.md** | Fast 2-minute setup guide |
-
-##  First Time Use| **README_OCR.md** | Complete OCR program manual |
-
-| **PROGRAM_INFO.txt** | Program summary and features |
-
-**First run takes 2-3 minutes:**| **SCREENSHOT_GUIDE.txt** | How to take perfect screenshots |
-
-- Installs Python packages automatically| **README.md** | This file |
-
-- Downloads OCR model (once only, ~100MB)
-
----
-
-**After that, it's instant!** 
-
-##  Which Program Should I Use?
-
-*(Model saves to your PC, works offline forever)*
-
-### Use **OCR Extractor** if you:
-
-----✅ Have a photo/screenshot of device list
-
-- ✅ Use Raymarine Axiom or similar display
-
-## 💡 Perfect For- ✅ Want the easiest, fastest method
-
-- ✅ Don't have export files
-
-📋 Marine surveys  
-
-🔧 Service records  ### Use **File Parser** if you:
-
-📄 Insurance claims  - ✅ Have CZone .czd or .xml files
-
-💼 Boat sales  - ✅ Have Empirbus .json or .csv exports
-
-🏢 Fleet management  - ✅ Want to process existing export files
-
-
-
----**Most people will use the OCR Extractor!**
-
-
-
-## 🔧 Troubleshooting---
-
-
-
-**"No devices found"**## 🎯 What Gets Extracted
-
-- Retake photo - clearer/sharper
-
-- Better lightingBoth programs extract:
-
-- Higher resolution- ✅ Device/Product names
-
-- Check device list is visible- ✅ Product codes (E70656, etc.)
-
-- ✅ Serial numbers
-
-**First extraction slow?**- ✅ Model information
-
-- Normal! Loading OCR model (10-30 sec)- ✅ Firmware versions (when available)
-
-- After first time, it's fast
-
-**Example Output:**
-
-**Program won't start?**```
-
-- Run as Administrator1. AXIOM 2 PRO 12 RVM E70656
-
-- Check Python installed: `python --version`   Serial Number: TA22ZKB
-
-
-
----2. Quantum 2 Doppler E70498
-
-   Serial Number: 1240430
-
-## 💻 Requirements
-
-3. C1 (80-911-0120-00)
-
-✅ Python 3.7+ (already installed)     Serial Number: J497793-0051
-
-✅ 2 GB RAM  ```
-
-✅ 2 GB disk space  
-
-✅ Internet (first time only)  ---
-
-
-
----## ⚙️ Installation
-
-
-
-## 🔒 Privacy & Security### Python (Already Installed)
-
-Your PC already has Python installed ✅
-
-✅ Runs **locally** on your PC  
-
-✅ **Offline** after first setup  ### Install OCR Dependencies
-
-✅ Images **never uploaded**  ```powershell
-
-✅ **100% private**  pip install -r requirements.txt
-
-```
-
----
-
-### Install Tesseract (One-Time)
-
-## 📁 Files```powershell
-
-winget install UB-Mannheim.Tesseract
-
-``````
-
-run_ocr_extractor.bat       ← START HERE!
-
-device_ocr_extractor.py     Main programOr download: https://github.com/UB-Mannheim/tesseract/wiki
-
-requirements.txt            Dependencies
-
-output/                     Your exports---
-
-```
-
-## 🎨 Features
-
----
-
-### OCR Image Extractor
-
-## ⚡ Why This Version?- 🖼️ **Visual interface** - See your image before extraction
-
-- 🤖 **Automatic OCR** - Reads text from images
-
-### ✅ No Tesseract Needed!- 📊 **Table view** - Review extracted data
-
-Uses **EasyOCR** instead:- ✏️ **Custom filename** - Name your exports
-
-- Automatic installation- 📁 **Multiple formats** - PNG, JPG, BMP support
-
-- No external software
-
-- Works great with photos### File Parser
-
-- Fast and accurate- 📦 **Batch processing** - Process multiple files at once
-
-- 🔄 **Multiple formats** - CZone, Empirbus, CSV, JSON, XML
-
-### ✅ Super Simple!- 📊 **Combined output** - All devices in one report
-
-- Double-click to start- 🎯 **Auto-detection** - Automatically identifies file types
-
-- Upload image
-
-- Get results---
-
-- Done!
-
-## 📱 Supported Systems
-
----
-
-✅ Raymarine Axiom 2 Pro / Axiom+ / Axiom XL  
-
-## 🎉 Start Now!✅ CZone Control Systems  
-
-✅ Empirbus NMEA 2000 Systems  
-
-**Double-click:** `run_ocr_extractor.bat`✅ Garmin Marine Networks  
-
-✅ Simrad/B&G/Lowrance Networks  
-
-**First time?** Be patient for 2-3 minutes while it sets up.  ✅ Any marine display with device lists  
-
-**After that?** Instant extraction! 🚀
-
----
-
----
-
-## 🔧 Troubleshooting
-
-**Made with ⚓ for marine electronics**
-
-### "Tesseract Not Found"
-
-*Version 2.0 - December 2025 - Zero external dependencies!***Solution:** Install Tesseract (see Installation section)
-
-
-### "No devices found"
-**Solution:** 
-- Check image quality
-- Ensure text is clear
-- Try higher resolution screenshot
-- See SCREENSHOT_GUIDE.txt
-
-### "Python not found"
-**Solution:** Python is installed, try:
+Execute the following command in the project directory:
 ```powershell
-python device_ocr_extractor.py
+pip install -r requirements.txt
 ```
 
-### More help?
-Check the detailed documentation:
-- **QUICKSTART.md** - Quick fixes
-- **README_OCR.md** - Detailed troubleshooting
+This will install:
+- EasyOCR (OCR engine)
+- PyTorch (machine learning framework)
+- Pillow (image processing)
+- Additional required libraries
+
+### No External Software Required
+This application uses EasyOCR, which does not require Tesseract or any external OCR software installation.
 
 ---
 
-## 📂 Project Structure
+## Data Extraction Capabilities
+
+### Extracted Information
+
+The system automatically identifies and extracts the following data fields:
+
+**Device Information**
+- Product name and model designation
+- Product codes (e.g., E70656, V70524, MS-RA770)
+- Serial numbers (multiple format support)
+- Device type classification
+
+**Supported Serial Number Formats**
+- Alphanumeric codes (TAR3WR7, TADG0G9)
+- Numeric sequences (0330729, 0730166)
+- Hyphenated formats (J497793-0051)
+- Extended formats (E704760350080)
+- GMDSS formats (12L3487)
+
+**Supported Device Types**
+- AXIOM 2 PRO 9
+- AXIOM 2 PRO 12
+- AXIOM 2 PRO 16
+- GMDSS
+- RAYMARINE AIS 700
+- RADAR QUANTUM 2
+- THERMAL CAMERA
+- RAYMARINE RAY53 VHF
+- RAYMARINE RS 150
+
+**Example Output**
+```
+GT9 - Vessel Name
+9100967
+___________________________________________
+
+AXIOM 2 PRO 16:
+E70658	TAR3WR7
+E70658	TADG0G9
+
+RAYMARINE RAY53 VHF:
+E70524	0330729
+
+RADAR QUANTUM 2:
+E70498	0940100
+```
+
+---
+
+## Image Acquisition Guidelines
+
+### Source Material Requirements
+
+**Recommended Specifications**
+- Image resolution: 1920x1080 pixels minimum
+- File format: PNG (preferred) or JPG
+- Color depth: 24-bit or higher
+- Compression: Minimal to none
+
+**Image Quality Standards**
+- Clear, sharp focus on text elements
+- Uniform lighting without glare or reflection
+- Perpendicular viewing angle to display
+- High contrast between text and background
+- Minimal motion blur or distortion
+
+### Raymarine Axiom Procedure
+1. Navigate to: Settings → Network → Device List
+2. Capture image using mobile device or camera
+3. Transfer file to workstation via USB, email, or cloud storage
+4. Import to application using Upload Image function
+
+---
+
+## Feature Set
+
+### Core Functionality
+
+**Image Processing**
+- Advanced OCR text recognition
+- Multiple image format support (PNG, JPG, BMP, TIFF)
+- Real-time image preview
+- Automatic text detection and extraction
+
+**User Interface**
+- Professional dark mode theme
+- Intuitive tabular data presentation
+- Device type selection via dropdown menus
+- Checkbox-based export selection
+- Real-time status feedback
+
+**Data Management**
+- Vessel information tracking (Model, Name, SAP)
+- Device type classification system
+- Manual device entry capability
+- Edit functionality for extracted data
+- Grouped export by device type
+
+**Export Capabilities**
+- Custom filename generation (SN_[SAP].txt format)
+- Formatted text output
+- Device grouping by type
+- Tab-delimited data structure
+
+---
+
+## Compatible Systems
+
+### Supported Marine Electronics
+
+**Raymarine Systems**
+- Axiom 2 Pro Series (9", 12", 16")
+- Axiom+ Series
+- Axiom XL Series
+
+**Network Management Systems**
+- CZone Digital Switching
+- Empirbus NMEA 2000 Networks
+- Garmin Marine Network
+- Simrad/B&G/Lowrance Networks
+
+**General Compatibility**
+- Any marine display system with text-based device lists
+- Network configuration screens
+- Device management interfaces
+
+---
+
+## Professional Applications
+
+### Use Cases
+
+**Marine Survey Operations**
+- Complete equipment inventory documentation
+- Serial number verification and recording
+- Asset tracking for insurance and valuation purposes
+
+**Service and Maintenance**
+- Equipment warranty tracking
+- Maintenance record keeping
+- Service history documentation
+- Parts ordering and replacement verification
+
+**Commercial Operations**
+- Fleet management and asset tracking
+- Vessel sale documentation
+- Insurance claim preparation
+- Regulatory compliance documentation
+
+**Corporate Applications**
+- Multi-vessel fleet inventory
+- Standardized documentation procedures
+- Quality assurance and verification
+- Asset lifecycle management
+
+---
+
+## System Architecture
+
+### Performance Characteristics
+
+**Initial Deployment**
+- First execution: 2-5 minutes (dependency installation)
+- OCR model download: 100-200 MB (one-time process)
+- Subsequent launches: Immediate
+
+**Operational Performance**
+- OCR processing time: 10-30 seconds per image
+- Batch processing: Supported for multiple devices
+- Offline operation: Fully functional after initial setup
+- Data privacy: All processing performed locally
+
+---
+
+## Security and Privacy
+
+### Data Protection
+
+**Local Processing**
+All data processing occurs entirely on the local workstation. No information is transmitted to external servers or cloud services.
+
+**Network Independence**
+After initial setup, the application operates completely offline. Internet connectivity is not required for normal operations.
+
+**Data Confidentiality**
+- Source images remain on local storage
+- No telemetry or usage data collection
+- No external data transmission
+- Complete data privacy assurance
+
+**Compliance**
+Suitable for use in environments requiring:
+- Data sovereignty
+- Air-gapped operations
+- Confidential information handling
+- GDPR compliance
+
+---
+
+## Troubleshooting
+
+### Common Issues and Resolutions
+
+**Issue: No Devices Detected**
+- Verify image quality and resolution
+- Ensure adequate contrast and lighting
+- Confirm text is clearly visible and in focus
+- Try higher resolution source image
+- Check that device list is fully visible in frame
+
+**Issue: Application Won't Launch**
+- Verify Python installation (python --version)
+- Check all dependencies installed (pip list)
+- Run as Administrator if permission issues occur
+- Review console output for error messages
+
+**Issue: Slow Initial Performance**
+- First execution loads OCR models (10-30 seconds normal)
+- Subsequent executions will be significantly faster
+- Ensure adequate system resources available
+
+**Issue: Export File Not Generated**
+- Verify write permissions in target directory
+- Ensure vessel information fields are completed
+- Confirm at least one device is selected for export
+- Check available disk space
+
+### Technical Support
+
+For additional assistance, consult:
+- QUICKSTART.md for rapid solutions
+- BUILD_INSTRUCTIONS.txt for deployment issues
+- System console output for error diagnostics
+
+---
+
+## Project Structure
 
 ```
 serial numbers extractor/
-├── 🖼️ OCR Program (Recommended)
-│   ├── device_ocr_extractor.py    # Main OCR program
-│   ├── run_ocr_extractor.bat      # Quick launcher
-│   └── README_OCR.md              # OCR documentation
+├── Core Application
+│   ├── device_ocr_extractor.py    # Main application
+│   ├── run_ocr_extractor.bat      # Launch utility
+│   └── requirements.txt           # Dependencies
 │
-├── 📄 File Parser
-│   ├── serial_extractor.py        # File parser program
-│   └── extract.bat                # Quick launcher
+├── Build System
+│   ├── build_exe.bat              # Executable builder
+│   ├── build_exe.py               # Build script
+│   └── BUILD_INSTRUCTIONS.txt     # Build documentation
 │
-├── 📚 Documentation
-│   ├── README.md                  # This file
-│   ├── QUICKSTART.md              # Quick start guide
-│   ├── PROGRAM_INFO.txt           # Program summary
-│   └── SCREENSHOT_GUIDE.txt       # Photo tips
+├── Assets
+│   ├── assets/                    # Application icons
+│   ├── create_icon.py             # Icon generator
+│   └── barcode-illustration*.avif # Icon source
 │
-├── 📁 Example Files
-│   └── example_files/             # Sample files for testing
-│
-└── 📦 Configuration
-    └── requirements.txt           # Python dependencies
+└── Documentation
+    ├── README.md                  # Primary documentation
+    └── QUICKSTART.md              # Quick reference
 ```
 
 ---
 
-## 🎯 Use Cases
+## Technical Documentation
 
-### 🔍 **Marine Surveys**
-Quickly document all equipment during boat surveys
+### Documentation Suite
 
-### 🔧 **Service & Maintenance**
-Record serials for warranty and service records
-
-### 📄 **Insurance Claims**
-Create complete equipment inventory
-
-### 💼 **Boat Sales**
-Provide detailed equipment list to buyers
-
-### 🏢 **Fleet Management**
-Track equipment across multiple vessels
+| Document | Description |
+|----------|-------------|
+| README.md | Primary documentation and system overview |
+| QUICKSTART.md | Rapid deployment guide |
+| BUILD_INSTRUCTIONS.txt | Executable compilation procedures |
+| requirements.txt | Python dependency specifications |
 
 ---
 
-## 💻 System Requirements
+## Deployment Options
 
-- **OS:** Windows 10/11, macOS, Linux
-- **Python:** 3.7+ (already installed)
-- **RAM:** 2 GB minimum
-- **Disk:** 500 MB for Tesseract
-- **Display:** 1024x768 minimum
+### Standalone Executable
+For distribution to systems without Python:
 
----
+1. Execute `build_exe.bat`
+2. Executable generated in `dist/` directory
+3. File: TechnohullSerialExtractor.exe (~500MB)
+4. No installation required on target systems
+5. Self-contained with all dependencies
 
-## 🔒 Privacy & Security
+### Python Deployment
+For development or customization:
 
-✅ All processing done **locally** on your computer  
-✅ **No internet** connection required  
-✅ Images **never uploaded** anywhere  
-✅ **No data collection** or sharing  
-✅ **100% private** and secure  
-
----
-
-## 📈 Version History
-
-**v1.0** - December 2, 2025
-- ✨ Initial release
-- 🖼️ OCR image extraction
-- 📄 CZone/Empirbus file parsing
-- 🎨 GUI interface
-- ✏️ Custom filename export
-- 📚 Complete documentation
+1. Install Python 3.8+
+2. Install dependencies: `pip install -r requirements.txt`
+3. Execute: `run_ocr_extractor.bat` or `python device_ocr_extractor.py`
 
 ---
 
-## 📞 Support
+## Best Practices
 
-1. Check **QUICKSTART.md** for quick help
-2. Read **SCREENSHOT_GUIDE.txt** for photo tips
-3. See **README_OCR.md** for detailed troubleshooting
-4. Verify image quality and Tesseract installation
+### Image Acquisition
+- Use PNG format for optimal quality
+- Maintain resolution of 1920x1080 or higher
+- Ensure perpendicular viewing angle
+- Avoid glare and reflections
+- Verify text clarity before processing
 
----
+### Data Management
+- Complete vessel information fields before export
+- Verify device type assignments
+- Review extracted data before export
+- Maintain consistent naming conventions
+- Archive source images with exported data
 
-## 📜 License
-
-Free to use for personal and commercial purposes.
-
----
-
-## 🎉 Getting Started
-
-**Ready to extract serial numbers?**
-
-1. **For Screenshots:** Double-click `run_ocr_extractor.bat`
-2. **For Export Files:** Double-click `extract.bat`
-
-**Need help?** Open `QUICKSTART.md`
-
----
-
-## ⭐ Tips for Success
-
-1. **Take clear photos** - See SCREENSHOT_GUIDE.txt
-2. **Use PNG format** - Better quality than JPG
-3. **Good lighting** - Avoid glare and shadows
-4. **Straight angle** - Photo directly facing screen
-5. **High resolution** - At least 1920x1080
+### Operational Guidelines
+- Allow adequate time for first-run setup
+- Verify extracted data accuracy
+- Maintain backup copies of export files
+- Document image source and date
+- Follow organizational data management protocols
 
 ---
 
-**Made with ⚓ for marine electronics professionals and enthusiasts**
+## Version Information
+
+### Current Release: Version 1.0
+**Release Date:** December 2, 2025
+
+**Features:**
+- OCR-based device information extraction
+- Professional dark mode GUI interface
+- Vessel information management
+- Device type classification system
+- Custom export formatting
+- Manual device entry and editing
+- Batch device processing
+- Comprehensive documentation suite
+
+---
+
+## License and Usage
+
+**License:** Proprietary - Technohull Marine
+**Permitted Use:** Commercial and internal business operations
+**Restrictions:** Distribution subject to licensing terms
+
+---
+
+## Technical Support and Contact
+
+For technical assistance, deployment guidance, or licensing inquiries, consult your system administrator or IT department.
+
+**Documentation Resources:**
+- README.md (this document)
+- QUICKSTART.md (rapid deployment guide)
+- BUILD_INSTRUCTIONS.txt (executable compilation)
+
+---
+
+**Technohull Marine Device Serial Number Extractor**  
+*Professional Marine Electronics Documentation Solution*  
+*Version 1.0 - December 2025*
