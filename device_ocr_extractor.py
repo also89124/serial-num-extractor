@@ -1103,11 +1103,25 @@ class DeviceExtractorGUI:
             product_code_pattern = r'^(E\d{5}|V\d{5}|MS-[A-Z0-9]+|\d{1,3}L\d{4})$'
             
             # Look for serial number patterns
+            # Further expanded serial patterns based on new examples
             serial_patterns = [
                 r'^[A-Z]{3}\d[A-Z0-9]{3}$',  # TAZ2ZKB, TAR3WR7, TADG0G9
                 r'^\d{7,12}$',  # 1240430, 0330729, 10962030599, 3490083196
                 r'^[JC]\d{6}-\d{4}$',  # J497793-0051
                 r'^E\d{10,}$',  # E704760350080
+                r'^[A-Z]{1,2}\d{7,10}$',  # Yamaha: 6MLN1000296, Mercury: 1E100979
+                r'^[A-Z0-9]{8,12}$',  # General engine/device serials: 3B417994, 3B424456, 3B331193
+                r'^[A-Z]{1,2}\d{6,8}$',  # Volvo: A1230833
+                r'^\d{8,10}$',  # Numeric serials: 0233669, 0326146
+                r'^[A-Z]{1,2}\d{6,12}$',  # e.g. 6MLLN1005392, 6KNN1005289
+                r'^[A-Z0-9]{6,14}$',  # e.g. 3B553644, 3B557006, 3B563885, 3B563883
+                r'^[A-Z]{1,2}\d{6,12}$',  # e.g. 6MLN1005390, 6MLLN1005392
+                r'^[A-Z]{1,2}\d{6,12}$',  # e.g. 6KNN1005289, 6KNN1005075
+                r'^[A-Z0-9]{8,15}$',  # e.g. 1E103027, 1E103214, 1E102818, 1E102771
+                r'^[A-Z0-9]{8,15}$',  # e.g. 1E102775, 1E102817, 1E102460
+                r'^[A-Z0-9\u0391-\u03A9]{8,15}$',  # Greek/Unicode letters (e.g. 13500033Α, 3Β535504)
+                r'^[A-Z0-9\-]{6,16}$',  # D6-440A-G, 8LV370Z, XF450NSA
+                r'^[A-Z0-9]{4,8}$',  # Short Yanmar: 6467, 6465, 6725, 6724
             ]
             
             # Try to find product code and serial in the line
@@ -1159,25 +1173,33 @@ class DeviceExtractorGUI:
             l = line.strip()
             if not l:
                 continue
-            if re.search(r'engine', l, flags=re.IGNORECASE) and re.search(r'(serial|s/n|esn)', l, flags=re.IGNORECASE):
-                # Search for a candidate serial on the same or next line
-                candidate_lines = [l]
-                if i + 1 < len(lines):
-                    candidate_lines.append(lines[i + 1].strip())
-                found_serial = None
-                for cl in candidate_lines:
-                    parts = cl.split()
-                    for part in parts:
-                        # General engine serial formats: alphanumeric 6-12 chars
-                        if re.match(r'^[A-Z0-9\-]{6,14}$', part, flags=re.IGNORECASE):
-                            # Validate against generic/known patterns
-                            if re.match(r'^\d{6,12}$', part) or re.match(r'^[A-Z0-9]{6,12}$', part, flags=re.IGNORECASE):
-                                found_serial = part
+            # Look for engine serial blocks (Yamaha, Mercury, Volvo, etc.)
+            if re.search(r'engine', l, flags=re.IGNORECASE) or re.search(r'engines', l, flags=re.IGNORECASE):
+                # Scan next few lines for model/serial pairs
+                for j in range(i+1, min(i+6, len(lines))):
+                    model_line = lines[j].strip()
+                    if re.search(r'model', model_line, flags=re.IGNORECASE):
+                        # Try to get serial from next line
+                        if j+1 < len(lines):
+                            serial_line = lines[j+1].strip()
+                            serial_match = None
+                            for pattern in serial_patterns:
+                                m = re.match(pattern, serial_line)
+                                if m:
+                                    serial_match = serial_line
+                                    break
+                            if serial_match:
+                                devices.append({'product': 'ENGINE', 'serial': serial_match})
+                    # Also catch lines like 'SERIAL NUMBER:'
+                    if re.search(r'serial', model_line, flags=re.IGNORECASE):
+                        serial_match = None
+                        for pattern in serial_patterns:
+                            m = re.match(pattern, model_line)
+                            if m:
+                                serial_match = model_line
                                 break
-                    if found_serial:
-                        break
-                if found_serial:
-                    devices.append({'product': 'ENGINE', 'serial': found_serial})
+                        if serial_match:
+                            devices.append({'product': 'ENGINE', 'serial': serial_match})
 
         # Remove duplicates
         seen = set()
