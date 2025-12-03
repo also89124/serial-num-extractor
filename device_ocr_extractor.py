@@ -62,75 +62,48 @@ class DeviceExtractorGUI:
         except:
             pass
         
-        # Title with gradient and logo
-        title_frame = tk.Frame(self.root, bg=self.bg_medium, height=90, highlightbackground=self.bg_light, highlightthickness=1)
+        # Title
+        title_frame = tk.Frame(self.root, bg=self.bg_medium, height=80, highlightbackground=self.bg_light, highlightthickness=1)
         title_frame.pack(fill=tk.X)
         title_frame.pack_propagate(False)
         title_frame.configure(borderwidth=0)
-
-        # Gradient effect (simulate with a canvas)
-        title_canvas = tk.Canvas(title_frame, width=2000, height=90, bg=self.bg_medium, highlightthickness=0, borderwidth=0)
-        title_canvas.pack(fill=tk.BOTH, expand=True)
-        for i in range(0, 90):
-            color = f"#{18+i:02x}{18+i:02x}{18+i:02x}"
-            title_canvas.create_rectangle(0, i, 2000, i+1, outline=color, fill=color)
-
+        
         # Try to load logo
-        logo_photo = None
         try:
             logo_path = Path(__file__).parent / "assets" / "app_logo.png"
             if logo_path.exists():
                 logo_img = Image.open(logo_path)
-                logo_img = logo_img.resize((60, 60), Image.Resampling.LANCZOS)
+                logo_img = logo_img.resize((50, 50), Image.Resampling.LANCZOS)
                 logo_photo = ImageTk.PhotoImage(logo_img)
+                
+                logo_label = tk.Label(title_frame, image=logo_photo, bg=self.bg_medium)
+                logo_label.image = logo_photo  # Keep reference
+                logo_label.pack(side=tk.LEFT, padx=15)
         except:
             pass
-
-        logo_label = tk.Label(title_frame, image=logo_photo, bg=self.bg_medium)
-        if logo_photo:
-            logo_label.image = logo_photo
-        logo_label.place(x=30, y=15)
-
-        # Main title
+        
         title_label = tk.Label(
             title_frame,
-            text="Technohull Marine Device Serial Extractor",
-            font=("Segoe UI", 22, "bold"),
+            text="Technohull Marine Device Serial Number Extractor",
+            font=("Arial", 16, "bold"),
             bg=self.bg_medium,
             fg=self.fg_primary,
             borderwidth=0,
             highlightthickness=0
         )
-        title_label.place(x=110, y=18)
-
-        # Tagline
-        tagline_label = tk.Label(
-            title_frame,
-            text="Effortless, Accurate, Corporate-Ready",
-            font=("Segoe UI", 12, "italic"),
-            bg=self.bg_medium,
-            fg=self.accent_blue,
-            borderwidth=0
-        )
-        tagline_label.place(x=115, y=55)
+        title_label.pack(side=tk.LEFT, pady=20)
         
         # Main container
-        # Main frame with subtle gradient
         main_frame = tk.Frame(self.root, padx=20, pady=20, bg=self.bg_dark, highlightbackground=self.bg_light, highlightthickness=1)
         main_frame.pack(fill=tk.BOTH, expand=True)
         main_frame.configure(borderwidth=0)
-        main_canvas = tk.Canvas(main_frame, width=2000, height=2000, bg=self.bg_dark, highlightthickness=0, borderwidth=0)
-        main_canvas.place(x=0, y=0, relwidth=1, relheight=1)
-        for i in range(0, 400, 2):
-            color = f"#{17+i//8:02x}{17+i//8:02x}{17+i//8:02x}"
-            main_canvas.create_rectangle(0, i, 2000, i+2, outline=color, fill=color)
         
         # Instructions
         instructions = tk.Label(
             main_frame,
-            text="Upload screenshots to extract device and engine serials",
-            font=("Segoe UI", 11, "bold"),
-            fg=self.accent_blue,
+            text="Upload one or more screenshots to extract device and engine serials",
+            font=("Arial", 10),
+            fg=self.fg_secondary,
             bg=self.bg_dark
         )
         instructions.pack(pady=(0, 15))
@@ -256,14 +229,14 @@ class DeviceExtractorGUI:
             button_frame,
             text="📁 Upload Images",
             command=self.upload_image,
-            font=("Segoe UI", 12, "bold"),
+            font=("Arial", 11, "bold"),
             bg=self.accent_blue,
             fg="white",
             padx=30,
             pady=10,
             cursor="hand2",
             relief=tk.FLAT,
-            activebackground="#005fa3",
+            activebackground="#0a5a5d",
             borderwidth=0
         )
         self.upload_btn.pack(side=tk.LEFT, padx=5)
@@ -272,8 +245,8 @@ class DeviceExtractorGUI:
             button_frame,
             text="🔍 Extract Devices & Engines",
             command=self.extract_devices,
-            font=("Segoe UI", 12, "bold"),
-            bg=self.accent_green,
+            font=("Arial", 11, "bold"),
+            bg=self.accent_blue,
             fg="white",
             padx=30,
             pady=10,
@@ -290,15 +263,15 @@ class DeviceExtractorGUI:
             button_frame,
             text="💾 Export to TXT",
             command=self.export_results,
-            font=("Segoe UI", 12, "bold"),
-            bg=self.accent_orange,
+            font=("Arial", 11, "bold"),
+            bg=self.accent_blue,
             fg="white",
             padx=30,
             pady=10,
             cursor="hand2",
             relief=tk.FLAT,
             state=tk.DISABLED,
-            activebackground="#ffb366",
+            activebackground="#0a5a5d",
             borderwidth=0,
             disabledforeground="#7f8c8d"
         )
@@ -515,11 +488,10 @@ class DeviceExtractorGUI:
         scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
         
         # Status bar
-        # Footer with copyright
         self.status_label = tk.Label(
             self.root,
             text="Ready",
-            font=("Segoe UI", 10),
+            font=("Arial", 9),
             bg=self.bg_light,
             fg=self.fg_primary,
             anchor=tk.W,
@@ -528,19 +500,6 @@ class DeviceExtractorGUI:
             highlightthickness=0
         )
         self.status_label.pack(fill=tk.X, side=tk.BOTTOM)
-
-        self.footer_label = tk.Label(
-            self.root,
-            text="© 2025 Technohull Marine | All Rights Reserved",
-            font=("Segoe UI", 9, "italic"),
-            bg=self.bg_dark,
-            fg=self.fg_secondary,
-            anchor=tk.E,
-            padx=10,
-            borderwidth=0,
-            highlightthickness=0
-        )
-        self.footer_label.pack(fill=tk.X, side=tk.BOTTOM)
     
     def _clear_placeholder(self, entry_widget, placeholder_text):
         """Clear placeholder text when entry is focused"""
