@@ -1,77 +1,69 @@
 # Quick Start Guide
 
-## 🚀 How to Use This Program
+## How to Use This Program
 
-### Step 1: Install Tesseract OCR
-
-**EASIEST METHOD - Direct Download:**
-
-**Option 1:** Double-click `install_tesseract_helper.bat` 
-(This will open the download page and guide you!)
-
-**Option 2:** Manual steps:
-1. Go to: https://github.com/UB-Mannheim/tesseract/wiki
-2. Download: tesseract-ocr-w64-setup-5.3.3.20231005.exe
-3. Run the installer (use default settings)
-4. Restart your computer
-
-**Option 3:** Direct download link:
-https://digi.bib.uni-mannheim.de/tesseract/tesseract-ocr-w64-setup-5.3.3.20231005.exe
-
-**Need detailed help?** See `INSTALL_TESSERACT.txt`
-
-### Step 2: Run the Program
+### Step 1: Run the Program
 
 Double-click: **`run_ocr_extractor.bat`**
 
-### Step 3: Extract Serial Numbers
+On first launch, required OCR models and dependencies will be installed automatically. This is a one-time process and may take 2–5 minutes.
 
-1. Click **"📁 Upload Image"**
-2. Select your screenshot
-3. Click **"🔍 Extract Devices"** - Wait a few seconds
-4. Review the extracted devices in the table
-5. Click **"💾 Export to TXT"**
-6. Type your desired filename (e.g., "MyBoat_Devices")
-7. Click Save
+### Step 2: Extract Serial Numbers
 
-### That's it! 🎉
+1. Click **"Upload Images"**
+2. Select one or more screenshots/photos
+3. Click **"Extract Devices & Engines"**
+4. Review extracted results in the table
+5. Double-click the "Device Type" column to assign types if needed (e.g., AXIOM, AIS 700, ENGINE)
+6. Check the items you want to export
+7. Click **"Export to TXT"**
+8. Enter a filename (format recommended: `SN_[SAP].txt`) and Save
 
-## 📸 How to Get Device Screenshots
+### That's it
+
+## How to Capture Screenshots
 
 ### From Raymarine Axiom:
-1. Go to: **Settings → Network**
-2. You'll see a list of all devices
-3. Take a photo with your phone OR
-4. Use the LightHouse app to screenshot
+1. Go to: **Settings → Network → Device List**
+2. Capture a clear image of the device list
+3. Transfer the image to your computer
+4. Upload via the application
+
+### For Engine Serial Numbers:
+1. Navigate to your engine diagnostics/status screen
+2. Capture the screen showing **Engine Serial Number** or **S/N**
+3. Ensure the serial is legible and well-lit
 
 ### Tips for Best Results:
-- ✅ Use high resolution images
-- ✅ Make sure text is clear and sharp
-- ✅ PNG format is best
-- ✅ Take photo straight-on (not at angle)
-- ❌ Avoid blurry images
-- ❌ Avoid glare or reflections
+- Use high-resolution images (1920x1080+)
+- Prefer PNG format for clarity
+- Keep the camera perpendicular to the screen
+- Avoid glare, reflections, and motion blur
+- Ensure text is sharp and readable
 
-## ⚠️ Troubleshooting
+## Troubleshooting
 
-### "Tesseract Not Found"
-- Install Tesseract using instructions above
-- Restart your computer
-- Run program again
+### First-run delay
+- The first run downloads OCR models; subsequent runs are faster.
 
-### "No devices found"
-- Check if image is clear
-- Try taking a new screenshot
-- Increase image resolution
-- Make sure device list is visible
+### "No items found"
+- Check image clarity and resolution
+- Ensure text is visible and not cropped
+- Try another screenshot or a straighter angle
+- Increase lighting and contrast
+
+### Application issues
+- Verify Python is installed: `python --version`
+- Install dependencies: `pip install -r requirements.txt`
+- Review terminal output for error messages
 
 ### Need Help?
-Check **README_OCR.md** for detailed instructions.
+See **README.md** for full documentation.
 
-## 📁 Files in This Folder
+## Files in This Folder
 
-- **device_ocr_extractor.py** - Main program
-- **run_ocr_extractor.bat** - Double-click this to start
-- **requirements.txt** - Python dependencies
-- **README_OCR.md** - Full documentation
-- **QUICKSTART.md** - This file
+- **device_ocr_extractor.py** — Main application
+- **run_ocr_extractor.bat** — Launch script
+- **requirements.txt** — Python dependencies
+- **README.md** — Full documentation
+- **QUICKSTART.md** — This quick reference

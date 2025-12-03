@@ -53,13 +53,13 @@ Execute `run_ocr_extractor.bat` to start the application.
 Initial launch will automatically install required dependencies. This process takes approximately 2-5 minutes and occurs only once.
 
 **Step 3: Operational Use**
-1. Select "Upload Image" to load source material
-2. Choose device screenshot or photograph
-3. Click "Extract Devices" to initiate OCR processing
+1. Select "Upload Images" to load one or more source files
+2. Choose device list screenshots and/or engine serial screenshots
+3. Click "Extract Devices & Engines" to initiate OCR processing
 4. Review extracted data in tabular format
-5. Assign device types using dropdown selectors
-6. Select devices for export via checkboxes
-7. Click "Export to TXT" to generate output file
+5. Assign device types (including ENGINE) using dropdown selectors
+6. Select items for export via checkboxes
+7. Click "Export to TXT" to generate the output file
 8. Specify filename (format: SN_[SAP].txt)
 
 ---
@@ -122,6 +122,7 @@ The system automatically identifies and extracts the following data fields:
 - THERMAL CAMERA
 - RAYMARINE RAY53 VHF
 - RAYMARINE RS 150
+- ENGINE
 
 **Example Output**
 ```
@@ -176,6 +177,7 @@ E70498	0940100
 - Multiple image format support (PNG, JPG, BMP, TIFF)
 - Real-time image preview
 - Automatic text detection and extraction
+ - Engine serial detection from labeled screenshots (Engine Serial / S/N / ESN)
 
 **User Interface**
 - Professional dark mode theme
@@ -261,7 +263,7 @@ E70498	0940100
 
 **Operational Performance**
 - OCR processing time: 10-30 seconds per image
-- Batch processing: Supported for multiple devices
+- Batch processing: Supported across multiple images
 - Offline operation: Fully functional after initial setup
 - Data privacy: All processing performed locally
 
@@ -415,8 +417,8 @@ For development or customization:
 
 ## Version Information
 
-### Current Release: Version 1.0
-**Release Date:** December 2, 2025
+### Current Release: Version 1.1
+**Release Date:** December 3, 2025
 
 **Features:**
 - OCR-based device information extraction

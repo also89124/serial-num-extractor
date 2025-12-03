@@ -28,6 +28,7 @@ class DeviceExtractorGUI:
         self.root.state('zoomed')  # Windows maximized window
         
         self.image_path = None
+        self.image_paths = []
         self.extracted_devices = []
         self.reader = None
         self.is_loading = False
@@ -38,15 +39,17 @@ class DeviceExtractorGUI:
         """Setup the user interface"""
         
         # Dark mode colors
-        self.bg_dark = "#1e1e1e"
-        self.bg_medium = "#2d2d2d"
-        self.bg_light = "#3e3e3e"
-        self.fg_primary = "#ffffff"
-        self.fg_secondary = "#b0b0b0"
-        self.accent_blue = "#0d7377"
+        # Black-friendly theme
+        self.bg_dark = "#111111"  # true black
+        self.bg_medium = "#181818"  # near black
+        self.bg_light = "#222222"  # dark gray
+        self.fg_primary = "#f8f8f8"  # off-white
+        self.fg_secondary = "#888888"  # muted gray
+        self.accent_blue = "#1a8cff"  # vivid blue
         self.accent_green = "#14cc60"
         self.accent_red = "#e74c3c"
         self.accent_orange = "#ff8c42"
+        self.border_radius = 12  # px for rounded corners
         
         # Set dark background for root
         self.root.configure(bg=self.bg_dark)
@@ -60,9 +63,10 @@ class DeviceExtractorGUI:
             pass
         
         # Title
-        title_frame = tk.Frame(self.root, bg=self.bg_medium, height=80)
+        title_frame = tk.Frame(self.root, bg=self.bg_medium, height=80, highlightbackground=self.bg_light, highlightthickness=1)
         title_frame.pack(fill=tk.X)
         title_frame.pack_propagate(False)
+        title_frame.configure(borderwidth=0)
         
         # Try to load logo
         try:
@@ -83,18 +87,21 @@ class DeviceExtractorGUI:
             text="Technohull Marine Device Serial Number Extractor",
             font=("Arial", 16, "bold"),
             bg=self.bg_medium,
-            fg="white"
+            fg=self.fg_primary,
+            borderwidth=0,
+            highlightthickness=0
         )
         title_label.pack(side=tk.LEFT, pady=20)
         
         # Main container
-        main_frame = tk.Frame(self.root, padx=20, pady=20, bg=self.bg_dark)
+        main_frame = tk.Frame(self.root, padx=20, pady=20, bg=self.bg_dark, highlightbackground=self.bg_light, highlightthickness=1)
         main_frame.pack(fill=tk.BOTH, expand=True)
+        main_frame.configure(borderwidth=0)
         
         # Instructions
         instructions = tk.Label(
             main_frame,
-            text="Upload a screenshot of your marine device list to extract serial numbers",
+            text="Upload one or more screenshots to extract device and engine serials",
             font=("Arial", 10),
             fg=self.fg_secondary,
             bg=self.bg_dark
@@ -109,12 +116,14 @@ class DeviceExtractorGUI:
             padx=10,
             pady=10,
             bg=self.bg_medium,
-            fg=self.fg_primary
+            fg=self.fg_primary,
+            borderwidth=0,
+            highlightthickness=0
         )
         vessel_info_frame.pack(pady=10, fill=tk.X)
         
         # Vessel Model
-        model_frame = tk.Frame(vessel_info_frame, bg=self.bg_medium)
+        model_frame = tk.Frame(vessel_info_frame, bg=self.bg_medium, borderwidth=0, highlightthickness=0)
         model_frame.pack(fill=tk.X, pady=5)
         
         model_label = tk.Label(
@@ -149,7 +158,7 @@ class DeviceExtractorGUI:
         self.vessel_model_entry.config(foreground="gray")
         
         # Vessel Name
-        name_frame = tk.Frame(vessel_info_frame, bg=self.bg_medium)
+        name_frame = tk.Frame(vessel_info_frame, bg=self.bg_medium, borderwidth=0, highlightthickness=0)
         name_frame.pack(fill=tk.X, pady=5)
         
         name_label = tk.Label(
@@ -176,7 +185,7 @@ class DeviceExtractorGUI:
         self.vessel_name_entry.config(fg=self.fg_secondary)
         
         # SAP Number
-        sap_frame = tk.Frame(vessel_info_frame, bg=self.bg_medium)
+        sap_frame = tk.Frame(vessel_info_frame, bg=self.bg_medium, borderwidth=0, highlightthickness=0)
         sap_frame.pack(fill=tk.X, pady=5)
         
         sap_label = tk.Label(
@@ -213,12 +222,12 @@ class DeviceExtractorGUI:
         self.sap_entry.bind("<FocusOut>", lambda e: self._restore_placeholder(self.sap_entry, "e.g., 9100967"))
         
         # Button frame
-        button_frame = tk.Frame(main_frame, bg=self.bg_dark)
+        button_frame = tk.Frame(main_frame, bg=self.bg_dark, borderwidth=0, highlightthickness=0)
         button_frame.pack(pady=10)
         
         self.upload_btn = tk.Button(
             button_frame,
-            text="📁 Upload Image",
+            text="📁 Upload Images",
             command=self.upload_image,
             font=("Arial", 11, "bold"),
             bg=self.accent_blue,
@@ -234,7 +243,7 @@ class DeviceExtractorGUI:
         
         self.extract_btn = tk.Button(
             button_frame,
-            text="🔍 Extract Devices",
+            text="🔍 Extract Devices & Engines",
             command=self.extract_devices,
             font=("Arial", 11, "bold"),
             bg=self.accent_blue,
@@ -276,33 +285,66 @@ class DeviceExtractorGUI:
             padx=10,
             pady=10,
             bg=self.bg_medium,
-            fg=self.fg_primary
+            fg=self.fg_primary,
+            borderwidth=0,
+            highlightthickness=0
         )
         preview_frame.pack(fill=tk.BOTH, expand=True, pady=10)
-        
+
+
+        # Main image preview
         self.image_label = tk.Label(
             preview_frame,
             text="No image loaded",
             font=("Arial", 10),
             fg=self.fg_secondary,
-            bg=self.bg_medium
+            bg=self.bg_medium,
+            borderwidth=0,
+            highlightthickness=0
         )
-        self.image_label.pack()
+        self.image_label.pack(pady=(0, 5))
+
+        # Always visible enlarge button (below preview frame)
+        self.enlarge_btn = tk.Button(
+            main_frame,
+            text="🔍 Enlarge Image",
+            command=self.enlarge_image,
+            font=("Arial", 10, "bold"),
+            bg=self.accent_blue,
+            fg="white",
+            padx=10,
+            pady=5,
+            cursor="hand2",
+            relief=tk.FLAT,
+            borderwidth=0,
+            activebackground="#0a5a5d",
+            highlightthickness=0
+        )
+        self.enlarge_btn.pack(pady=(0, 10))
+
+        # Thumbnails frame
+        self.thumbnails_frame = tk.Frame(preview_frame, bg=self.bg_medium, borderwidth=0, highlightthickness=0)
+        self.thumbnails_frame.pack(fill=tk.X, pady=5)
+        self.thumbnail_images = []  # Store references
+        self.thumbnail_buttons = []
+        self.current_image_index = 0
         
         # Results frame
         results_frame = tk.LabelFrame(
             main_frame,
-            text="Extracted Devices - Select devices to export",
+            text="Extracted Items (Devices & Engines) - Select items to export",
             font=("Arial", 10, "bold"),
             padx=10,
             pady=10,
             bg=self.bg_medium,
-            fg=self.fg_primary
+            fg=self.fg_primary,
+            borderwidth=0,
+            highlightthickness=0
         )
         results_frame.pack(fill=tk.BOTH, expand=True, pady=10)
         
         # Add device dropdown and button - for manual additions
-        add_device_frame = tk.Frame(results_frame, bg=self.bg_medium)
+        add_device_frame = tk.Frame(results_frame, bg=self.bg_medium, borderwidth=0, highlightthickness=0)
         add_device_frame.pack(fill=tk.X, pady=5)
         
         tk.Label(add_device_frame, text="Add Device Manually:", font=("Arial", 9, "bold"), bg=self.bg_medium, fg=self.fg_primary).pack(side=tk.LEFT, padx=5)
@@ -318,7 +360,8 @@ class DeviceExtractorGUI:
                 "RADAR QUANTUM 2",
                 "THERMAL CAMERA",
                 "RAYMARINE RAY53 VHF",
-                "RAYMARINE RS 150"
+                "RAYMARINE RS 150",
+                "ENGINE"
             ],
             state="readonly",
             width=25,
@@ -383,6 +426,22 @@ class DeviceExtractorGUI:
         
         # Create treeview with device type dropdown in each row
         columns = ("Select", "DeviceType", "Code", "Serial")
+        style = ttk.Style()
+        style.theme_use("default")
+        style.configure("Treeview",
+                        background=self.bg_light,
+                        foreground=self.fg_primary,
+                        fieldbackground=self.bg_light,
+                        borderwidth=0,
+                        rowheight=28,
+                        font=("Arial", 10))
+        style.map("Treeview",
+                  background=[('selected', self.accent_blue)])
+        style.configure("Treeview.Heading",
+                        background=self.bg_medium,
+                        foreground=self.fg_primary,
+                        font=("Arial", 10, "bold"),
+                        borderwidth=0)
         self.tree = ttk.Treeview(
             results_frame,
             columns=columns,
@@ -418,13 +477,13 @@ class DeviceExtractorGUI:
             "RADAR QUANTUM 2",
             "THERMAL CAMERA",
             "RAYMARINE RAY53 VHF",
-            "RAYMARINE RS 150"
+            "RAYMARINE RS 150",
+            "ENGINE"
         ]
         
         # Scrollbar
         scrollbar = ttk.Scrollbar(results_frame, orient=tk.VERTICAL, command=self.tree.yview)
         self.tree.configure(yscroll=scrollbar.set)
-        
         self.tree.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
         scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
         
@@ -436,7 +495,9 @@ class DeviceExtractorGUI:
             bg=self.bg_light,
             fg=self.fg_primary,
             anchor=tk.W,
-            padx=10
+            padx=10,
+            borderwidth=0,
+            highlightthickness=0
         )
         self.status_label.pack(fill=tk.X, side=tk.BOTTOM)
     
@@ -463,49 +524,123 @@ class DeviceExtractorGUI:
         combobox_widget.config(foreground=self.fg_primary)
         
     def upload_image(self):
-        """Handle image upload"""
-        file_path = filedialog.askopenfilename(
-            title="Select Device List Screenshot",
+        """Handle image upload (supports multiple files)"""
+        file_paths = filedialog.askopenfilenames(
+            title="Select One or More Screenshots",
             filetypes=[
                 ("Image files", "*.png *.jpg *.jpeg *.bmp *.gif *.tiff"),
                 ("All files", "*.*")
             ]
         )
-        
-        if file_path:
-            self.image_path = file_path
-            self.display_image(file_path)
+
+        if file_paths:
+            self.image_paths = list(file_paths)
+            self.current_image_index = 0
+            # Backward compatibility for single image usage
+            self.image_path = self.image_paths[0]
+            # Display the first image
+            self.display_image(self.image_paths[0])
             self.extract_btn.config(state=tk.NORMAL)
-            self.status_label.config(text=f"Loaded: {Path(file_path).name}")
+            loaded_count = len(self.image_paths)
+            if loaded_count == 1:
+                self.status_label.config(text=f"Loaded 1 image: {Path(self.image_paths[0]).name}")
+            else:
+                self.status_label.config(text=f"Loaded {loaded_count} images (showing first)")
+            self.show_thumbnails()
             
     def display_image(self, image_path):
         """Display the uploaded image"""
         try:
             # Load and resize image
             image = Image.open(image_path)
-            
-            # Calculate size to fit in preview (max 400x300)
+            # Calculate size to fit in preview (max 800x250)
             max_width = 800
             max_height = 250
-            
             ratio = min(max_width/image.width, max_height/image.height)
             new_size = (int(image.width * ratio), int(image.height * ratio))
-            
             image = image.resize(new_size, Image.Resampling.LANCZOS)
-            
             # Convert to PhotoImage
             photo = ImageTk.PhotoImage(image)
-            
             self.image_label.config(image=photo, text="")
             self.image_label.image = photo  # Keep a reference
-            
         except Exception as e:
             messagebox.showerror("Error", f"Failed to load image: {e}")
+
+    def show_thumbnails(self):
+        """Show thumbnails for all selected images"""
+        # Clear previous thumbnails
+        for btn in self.thumbnail_buttons:
+            btn.destroy()
+        self.thumbnail_buttons.clear()
+        self.thumbnail_images.clear()
+        # Create thumbnails
+        thumb_size = (60, 40)
+        for idx, img_path in enumerate(self.image_paths):
+            try:
+                img = Image.open(img_path)
+                img.thumbnail(thumb_size, Image.Resampling.LANCZOS)
+                thumb = ImageTk.PhotoImage(img)
+                self.thumbnail_images.append(thumb)
+                btn = tk.Label(
+                    self.thumbnails_frame,
+                    image=thumb,
+                    bg=self.bg_medium,
+                    cursor="hand2",
+                    borderwidth=0,
+                    highlightthickness=0,
+                    relief=tk.FLAT
+                )
+                # Custom rounded border using a frame
+                border_frame = tk.Frame(self.thumbnails_frame, bg=self.bg_medium, borderwidth=0, highlightthickness=0)
+                btn.pack(in_=border_frame, padx=0, pady=0)
+                border_frame.pack(side=tk.LEFT, padx=4, pady=2)
+                # Draw highlight border for selected
+                if idx == self.current_image_index:
+                    border_frame.config(bg=self.accent_blue)
+                else:
+                    border_frame.config(bg=self.bg_medium)
+                btn.bind("<Button-1>", lambda e, i=idx: self.on_thumbnail_click(i))
+                self.thumbnail_buttons.append(border_frame)
+            except Exception:
+                continue
+
+    def on_thumbnail_click(self, idx):
+        """Change main preview to selected thumbnail and update highlight"""
+        self.current_image_index = idx
+        self.image_path = self.image_paths[idx]
+        self.display_image(self.image_path)
+        # Redraw thumbnails to update highlight
+        self.show_thumbnails()
+
+    def enlarge_image(self):
+        """Open the current image in a maximized popup window"""
+        if not self.image_paths:
+            return
+        img_path = self.image_paths[self.current_image_index]
+        try:
+            img = Image.open(img_path)
+            popup = tk.Toplevel(self.root)
+            popup.title(f"Enlarged View - {Path(img_path).name}")
+            popup.configure(bg=self.bg_dark)
+            # Maximize window
+            popup.state('zoomed')
+            # Resize image to fit screen
+            screen_w = popup.winfo_screenwidth()
+            screen_h = popup.winfo_screenheight()
+            ratio = min(screen_w/img.width, screen_h/img.height, 1.0)
+            new_size = (int(img.width * ratio), int(img.height * ratio))
+            img = img.resize(new_size, Image.Resampling.LANCZOS)
+            photo = ImageTk.PhotoImage(img)
+            label = tk.Label(popup, image=photo, bg=self.bg_dark)
+            label.image = photo
+            label.pack(expand=True)
+        except Exception as e:
+            messagebox.showerror("Error", f"Failed to enlarge image: {e}")
             
     def extract_devices(self):
-        """Extract device information from image using OCR"""
-        if not self.image_path:
-            messagebox.showwarning("Warning", "Please upload an image first")
+        """Extract device and engine information from image(s) using OCR"""
+        if not self.image_paths:
+            messagebox.showwarning("Warning", "Please upload one or more images first")
             return
         
         if self.is_loading:
@@ -533,18 +668,20 @@ class DeviceExtractorGUI:
                 self.reader = easyocr.Reader(['en'], gpu=False)
             
             self.root.after(0, lambda: self.status_label.config(
-                text="Reading image... Please wait"
+                text="Reading image(s)... Please wait"
             ))
-            
-            # Perform OCR
-            results = self.reader.readtext(self.image_path)
-            
-            # Extract text
-            text_lines = [detection[1] for detection in results]
-            text = '\n'.join(text_lines)
-            
-            # Parse the text to extract devices
-            self.extracted_devices = self.parse_device_text(text)
+
+            aggregated_devices = []
+            for idx, img_path in enumerate(self.image_paths):
+                # Perform OCR per image
+                results = self.reader.readtext(img_path)
+                text_lines = [detection[1] for detection in results]
+                text = '\n'.join(text_lines)
+                # Parse the text to extract devices and engine serials
+                parsed = self.parse_device_text(text)
+                aggregated_devices.extend(parsed)
+
+            self.extracted_devices = aggregated_devices
             
             # Update GUI in main thread
             self.root.after(0, self._update_results)
@@ -589,17 +726,17 @@ class DeviceExtractorGUI:
             
             self.export_btn.config(state=tk.NORMAL)
             self.status_label.config(
-                text=f"✓ Extracted {len(self.extracted_devices)} devices - Double-click device type to change"
+                text=f"✓ Extracted {len(self.extracted_devices)} items - Double-click device type to change"
             )
             messagebox.showinfo(
                 "Success",
-                f"Successfully extracted {len(self.extracted_devices)} devices!\n\nDouble-click on 'Device Type' column to assign device types.\nCheck the boxes for devices to export."
+                f"Successfully extracted {len(self.extracted_devices)} items!\n\nDouble-click on 'Device Type' column to assign device types.\nCheck the boxes for items to export."
             )
         else:
-            self.status_label.config(text="⚠ No devices found in image")
+            self.status_label.config(text="⚠ No devices or engines found in image(s)")
             messagebox.showwarning(
                 "Warning",
-                "Could not find any devices in the image.\n\nTips:\n- Ensure image is clear and in focus\n- Try a higher resolution screenshot\n- Check that text is visible"
+                "Could not find any devices or engine serials in the image(s).\n\nTips:\n- Ensure image is clear and in focus\n- Try a higher resolution screenshot\n- Check that text is visible"
             )
         
         # Re-enable buttons
@@ -629,6 +766,8 @@ class DeviceExtractorGUI:
             return "RAYMARINE RAY53 VHF"
         elif "RS" in product_upper and "150" in product_upper:
             return "RAYMARINE RS 150"
+        elif "ENGINE" in product_upper:
+            return "ENGINE"
         
         return None
     
@@ -945,7 +1084,7 @@ class DeviceExtractorGUI:
         self.status_label.config(text=f"✓ Removed {len(selected_items)} device(s)")
             
     def parse_device_text(self, text):
-        """Parse OCR text to extract device information"""
+        """Parse OCR text to extract device and engine serial information"""
         devices = []
         lines = text.split('\n')
         
@@ -966,7 +1105,7 @@ class DeviceExtractorGUI:
             # Look for serial number patterns
             serial_patterns = [
                 r'^[A-Z]{3}\d[A-Z0-9]{3}$',  # TAZ2ZKB, TAR3WR7, TADG0G9
-                r'^\d{7,10}$',  # 1240430, 0330729, 10962030599, 3490083196
+                r'^\d{7,12}$',  # 1240430, 0330729, 10962030599, 3490083196
                 r'^[JC]\d{6}-\d{4}$',  # J497793-0051
                 r'^E\d{10,}$',  # E704760350080
             ]
@@ -1015,6 +1154,31 @@ class DeviceExtractorGUI:
                             })
                             break
         
+        # Engine serial detection: look for lines indicating engine serial markers
+        for i, line in enumerate(lines):
+            l = line.strip()
+            if not l:
+                continue
+            if re.search(r'engine', l, flags=re.IGNORECASE) and re.search(r'(serial|s/n|esn)', l, flags=re.IGNORECASE):
+                # Search for a candidate serial on the same or next line
+                candidate_lines = [l]
+                if i + 1 < len(lines):
+                    candidate_lines.append(lines[i + 1].strip())
+                found_serial = None
+                for cl in candidate_lines:
+                    parts = cl.split()
+                    for part in parts:
+                        # General engine serial formats: alphanumeric 6-12 chars
+                        if re.match(r'^[A-Z0-9\-]{6,14}$', part, flags=re.IGNORECASE):
+                            # Validate against generic/known patterns
+                            if re.match(r'^\d{6,12}$', part) or re.match(r'^[A-Z0-9]{6,12}$', part, flags=re.IGNORECASE):
+                                found_serial = part
+                                break
+                    if found_serial:
+                        break
+                if found_serial:
+                    devices.append({'product': 'ENGINE', 'serial': found_serial})
+
         # Remove duplicates
         seen = set()
         unique_devices = []
