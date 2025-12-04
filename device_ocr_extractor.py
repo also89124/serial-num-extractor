@@ -35,6 +35,31 @@ class DeviceExtractorGUI:
         
         self.setup_ui()
         
+    def add_manual_engine(self):
+        """Add engine manually from dropdown"""
+        engine_type = self.engine_dropdown_add.get()
+        model_number = self.engine_model_entry.get().strip()
+        serial_number = self.engine_serial_entry.get().strip()
+        if not engine_type:
+            messagebox.showwarning("Warning", "Please select an engine type from dropdown")
+            return
+        if not model_number:
+            messagebox.showwarning("Warning", "Please enter a model number")
+            return
+        if not serial_number:
+            messagebox.showwarning("Warning", "Please enter a serial number")
+            return
+        # Add to tree
+        item_id = self.tree.insert("", tk.END, values=("☑", engine_type, model_number, serial_number))
+        self.device_selected[item_id] = True
+        self.device_types[item_id] = engine_type
+        # Clear inputs
+        self.engine_dropdown_add.set("")
+        self.engine_model_entry.delete(0, tk.END)
+        self.engine_serial_entry.delete(0, tk.END)
+        self.export_btn.config(state=tk.NORMAL)
+        self.status_label.config(text=f"✓ Added {engine_type}")
+
     def setup_ui(self):
         """Setup the user interface"""
         
@@ -137,9 +162,16 @@ class DeviceExtractorGUI:
         )
         model_label.pack(side=tk.LEFT, padx=5)
         
+        style = ttk.Style()
+        style.theme_use("default")
+        style.configure("Dark.TCombobox",
+                        fieldbackground="#181818",
+                        background="#181818",
+                        foreground=self.fg_primary,
+                        font=("Arial", 12, "bold"))
         self.vessel_model_entry = ttk.Combobox(
             model_frame,
-            font=("Arial", 10),
+            font=("Arial", 12, "bold"),
             values=[
                 "GT9",
                 "GTX",
@@ -151,11 +183,12 @@ class DeviceExtractorGUI:
                 "GT7",
                 "GS38"
             ],
-            width=38
+            width=38,
+            style="Dark.TCombobox"
         )
         self.vessel_model_entry.pack(side=tk.LEFT, padx=5, fill=tk.X, expand=True)
         self.vessel_model_entry.set("Select model...")
-        self.vessel_model_entry.config(foreground="gray")
+        self.vessel_model_entry.config(foreground=self.fg_primary)
         
         # Vessel Name
         name_frame = tk.Frame(vessel_info_frame, bg=self.bg_medium, borderwidth=0, highlightthickness=0)
@@ -174,11 +207,12 @@ class DeviceExtractorGUI:
         
         self.vessel_name_entry = tk.Entry(
             name_frame,
-            font=("Arial", 10),
+            font=("Arial", 12, "bold"),
             width=40,
-            bg=self.bg_light,
+            bg="#222222",
             fg=self.fg_primary,
-            insertbackground=self.fg_primary
+            insertbackground=self.fg_primary,
+            relief=tk.FLAT
         )
         self.vessel_name_entry.pack(side=tk.LEFT, padx=5, fill=tk.X, expand=True)
         self.vessel_name_entry.insert(0, "e.g., Sea Explorer")
@@ -201,11 +235,12 @@ class DeviceExtractorGUI:
         
         self.sap_entry = tk.Entry(
             sap_frame,
-            font=("Arial", 10),
+            font=("Arial", 12, "bold"),
             width=40,
-            bg=self.bg_light,
+            bg="#222222",
             fg=self.fg_primary,
-            insertbackground=self.fg_primary
+            insertbackground=self.fg_primary,
+            relief=tk.FLAT
         )
         self.sap_entry.pack(side=tk.LEFT, padx=5, fill=tk.X, expand=True)
         self.sap_entry.insert(0, "e.g., 9100967")
@@ -346,9 +381,7 @@ class DeviceExtractorGUI:
         # Add device dropdown and button - for manual additions
         add_device_frame = tk.Frame(results_frame, bg=self.bg_medium, borderwidth=0, highlightthickness=0)
         add_device_frame.pack(fill=tk.X, pady=5)
-        
         tk.Label(add_device_frame, text="Add Device Manually:", font=("Arial", 9, "bold"), bg=self.bg_medium, fg=self.fg_primary).pack(side=tk.LEFT, padx=5)
-        
         self.device_dropdown_add = ttk.Combobox(
             add_device_frame,
             values=[
@@ -360,25 +393,21 @@ class DeviceExtractorGUI:
                 "RADAR QUANTUM 2",
                 "THERMAL CAMERA",
                 "RAYMARINE RAY53 VHF",
-                "RAYMARINE RS 150",
-                "ENGINE"
+                "RAYMARINE RS 150"
             ],
             state="readonly",
             width=25,
             font=("Arial", 9)
         )
         self.device_dropdown_add.pack(side=tk.LEFT, padx=5)
-        
         # Product code entry
         tk.Label(add_device_frame, text="Code:", font=("Arial", 9), bg=self.bg_medium, fg=self.fg_primary).pack(side=tk.LEFT, padx=5)
         self.product_code_entry = tk.Entry(add_device_frame, width=10, font=("Arial", 9), bg=self.bg_light, fg=self.fg_primary, insertbackground=self.fg_primary)
         self.product_code_entry.pack(side=tk.LEFT, padx=5)
-        
         # Serial number entry
         tk.Label(add_device_frame, text="Serial:", font=("Arial", 9), bg=self.bg_medium, fg=self.fg_primary).pack(side=tk.LEFT, padx=5)
         self.serial_entry = tk.Entry(add_device_frame, width=15, font=("Arial", 9), bg=self.bg_light, fg=self.fg_primary, insertbackground=self.fg_primary)
         self.serial_entry.pack(side=tk.LEFT, padx=5)
-        
         # Add button
         add_btn = tk.Button(
             add_device_frame,
@@ -393,7 +422,6 @@ class DeviceExtractorGUI:
             activebackground="#0a5a5d"
         )
         add_btn.pack(side=tk.LEFT, padx=5)
-        
         # Edit button
         edit_btn = tk.Button(
             add_device_frame,
@@ -408,7 +436,6 @@ class DeviceExtractorGUI:
             activebackground="#0a5a5d"
         )
         edit_btn.pack(side=tk.LEFT, padx=5)
-        
         # Remove button
         remove_btn = tk.Button(
             add_device_frame,
@@ -423,6 +450,47 @@ class DeviceExtractorGUI:
             activebackground="#0a5a5d"
         )
         remove_btn.pack(side=tk.LEFT, padx=5)
+
+        # Engine section for manual addition
+        engine_frame = tk.Frame(results_frame, bg=self.bg_medium, borderwidth=0, highlightthickness=0)
+        engine_frame.pack(fill=tk.X, pady=5)
+        tk.Label(engine_frame, text="Add Engine Manually:", font=("Arial", 9, "bold"), bg=self.bg_medium, fg=self.fg_primary).pack(side=tk.LEFT, padx=5)
+        self.engine_dropdown_add = ttk.Combobox(
+            engine_frame,
+            values=[
+                "300 MERCURY NO ELECTRIC STEERING",
+                "350 V10 MERCURY",
+                "400 V10 MERCURY",
+                "400R V10 MERCURY",
+                "600 MERCURY",
+                "300 YAMAHA",
+                "350 YAMAHA",
+                "370 YANMAR"
+            ],
+            state="readonly",
+            width=30,
+            font=("Arial", 9)
+        )
+        self.engine_dropdown_add.pack(side=tk.LEFT, padx=5)
+        tk.Label(engine_frame, text="Model Number:", font=("Arial", 9), bg=self.bg_medium, fg=self.fg_primary).pack(side=tk.LEFT, padx=5)
+        self.engine_model_entry = tk.Entry(engine_frame, width=12, font=("Arial", 9), bg=self.bg_light, fg=self.fg_primary, insertbackground=self.fg_primary)
+        self.engine_model_entry.pack(side=tk.LEFT, padx=5)
+        tk.Label(engine_frame, text="Serial Number:", font=("Arial", 9), bg=self.bg_medium, fg=self.fg_primary).pack(side=tk.LEFT, padx=5)
+        self.engine_serial_entry = tk.Entry(engine_frame, width=15, font=("Arial", 9), bg=self.bg_light, fg=self.fg_primary, insertbackground=self.fg_primary)
+        self.engine_serial_entry.pack(side=tk.LEFT, padx=5)
+        engine_add_btn = tk.Button(
+            engine_frame,
+            text="➕ Add Engine",
+            command=self.add_manual_engine,
+            font=("Arial", 9),
+            bg=self.accent_blue,
+            fg="white",
+            cursor="hand2",
+            relief=tk.FLAT,
+            borderwidth=0,
+            activebackground="#0a5a5d"
+        )
+        engine_add_btn.pack(side=tk.LEFT, padx=5)
         
         # Create treeview with device type dropdown in each row
         columns = ("Select", "DeviceType", "Code", "Serial")
@@ -1263,7 +1331,7 @@ class DeviceExtractorGUI:
                     # SAP line
                     f.write(f"{sap_number}\n")
                     # Divider line
-                    f.write("___________________________________________\n\n")
+                    f.write("___________________________________\n\n")
                     
                     # Collect devices grouped by type
                     devices_by_type = {}
@@ -1291,9 +1359,20 @@ class DeviceExtractorGUI:
                     # Export grouped by device type
                     exported_count = 0
                     for device_type, devices in devices_by_type.items():
-                        # Write device type header
-                        f.write(f"{device_type}:\n")
-                        
+                        # Append 'GPS' to AXIOM screens
+                        display_type = device_type
+                        if device_type.upper().startswith("AXIOM"):
+                            display_type = f"{device_type} GPS"
+                        # For engines, show count and type
+                        if device_type.upper() == "ENGINE" or device_type.upper().startswith("ENGINE"):
+                            count = len(devices)
+                            if count > 1:
+                                display_type = f"{device_type} (x{count})"
+                        else:
+                            count = len(devices)
+                            if count > 1:
+                                display_type = f"{display_type} (x{count})"
+                        f.write(f"{display_type}:\n")
                         # Write all serial numbers for this device type
                         for device in devices:
                             if device['code']:
@@ -1301,7 +1380,6 @@ class DeviceExtractorGUI:
                             else:
                                 f.write(f"{device['serial']}\n")
                             exported_count += 1
-                        
                         # Add blank line between device types
                         f.write("\n")
                 

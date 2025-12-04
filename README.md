@@ -1,3 +1,17 @@
+## Supported Engine Types for Manual Entry
+
+You can manually add engines using the following options:
+
+- 300 MERCURY NO ELECTRIC STEERING
+- 350 V10 MERCURY
+- 400 V10 MERCURY
+- 400R V10 MERCURY
+- 600 MERCURY
+- 300 YAMAHA
+- 350 YAMAHA
+- 370 YANMAR
+
+When adding engines, you must provide both the Model Number and Serial Number for each engine.
 # Technohull Marine Device Serial Number Extractor
 
 **Marine Electronics Documentation Solution**
@@ -126,8 +140,8 @@ The system automatically identifies and extracts the following data fields:
 
 **Example Output**
 ```
-GT9 - Vessel Name
-9100967
+Model - Vessel Name
+ID_NUMBER
 ___________________________________________
 
 AXIOM 2 PRO 16:
@@ -418,7 +432,7 @@ For development or customization:
 ## Version Information
 
 ### Current Release: Version 1.1
-**Release Date:** December 3, 2025
+**Release Date:** December 4, 2025
 
 **Features:**
 - OCR-based device information extraction
@@ -453,4 +467,4 @@ For technical assistance, deployment guidance, or licensing inquiries, consult y
 
 **Technohull Marine Device Serial Number Extractor**  
 *Electronics Documentation Solution*  
-*Version 1.1 - December 2025*
+*Version 1.2 - December 2025*
