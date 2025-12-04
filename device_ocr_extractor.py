@@ -20,19 +20,23 @@ import threading
 
 class DeviceExtractorGUI:
     """GUI application for extracting device serials from images"""
-    
+
+    def _on_mousewheel(self, event):
+        # Windows uses event.delta, positive/negative for up/down
+        self.main_canvas.yview_scroll(int(-1*(event.delta/120)), "units")
+
     def __init__(self, root):
+        """Initialize the GUI application"""
         self.root = root
+        self.main_canvas = None  # Placeholder for main_canvas
         self.root.title("Technohull Marine Device Serial Number Extractor")
         # Start maximized
         self.root.state('zoomed')  # Windows maximized window
-        
         self.image_path = None
         self.image_paths = []
         self.extracted_devices = []
         self.reader = None
         self.is_loading = False
-        
         self.setup_ui()
         
     def add_manual_engine(self):
@@ -74,7 +78,7 @@ class DeviceExtractorGUI:
         self.accent_green = "#14cc60"
         self.accent_red = "#e74c3c"
         self.accent_orange = "#ff8c42"
-        self.border_radius = 12  # px for rounded corners
+        self.border_radius = 18  # px for more rounded corners
         
         # Set dark background for root
         self.root.configure(bg=self.bg_dark)
@@ -118,20 +122,25 @@ class DeviceExtractorGUI:
         )
         title_label.pack(side=tk.LEFT, pady=20)
         
-        # Main container
-        main_frame = tk.Frame(self.root, padx=20, pady=20, bg=self.bg_dark, highlightbackground=self.bg_light, highlightthickness=1)
-        main_frame.pack(fill=tk.BOTH, expand=True)
-        main_frame.configure(borderwidth=0)
+        # Main container with vertical scrollbar
+        # Layout fix: use a container frame for canvas and scrollbar
+        container = tk.Frame(self.root, bg=self.bg_dark)
+        container.pack(fill=tk.BOTH, expand=True)
+        main_canvas = tk.Canvas(container, bg=self.bg_dark, highlightbackground=self.bg_light, highlightthickness=1, borderwidth=0)
+        main_scrollbar = tk.Scrollbar(container, orient=tk.VERTICAL, command=main_canvas.yview)
+        main_canvas.configure(yscrollcommand=main_scrollbar.set)
+        main_canvas.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+        main_scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+        main_frame = tk.Frame(main_canvas, padx=20, pady=20, bg=self.bg_dark)
+        main_window = main_canvas.create_window((0, 0), window=main_frame, anchor="nw")
+        def _on_frame_configure(event):
+            main_canvas.configure(scrollregion=main_canvas.bbox("all"))
+            main_canvas.itemconfig(main_window, width=main_canvas.winfo_width())
+        main_frame.bind("<Configure>", _on_frame_configure)
+        def _on_canvas_configure(event):
+            main_canvas.itemconfig(main_window, width=event.width)
+        main_canvas.bind("<Configure>", _on_canvas_configure)
         
-        # Instructions
-        instructions = tk.Label(
-            main_frame,
-            text="Upload one or more screenshots to extract device and engine serials",
-            font=("Arial", 10),
-            fg=self.fg_secondary,
-            bg=self.bg_dark
-        )
-        instructions.pack(pady=(0, 15))
         
         # Vessel information inputs
         vessel_info_frame = tk.LabelFrame(
@@ -350,7 +359,7 @@ class DeviceExtractorGUI:
             padx=10,
             pady=5,
             cursor="hand2",
-            relief=tk.FLAT,
+            relief=tk.GROOVE,
             borderwidth=0,
             activebackground="#0a5a5d",
             highlightthickness=0
@@ -417,7 +426,7 @@ class DeviceExtractorGUI:
             bg=self.accent_blue,
             fg="white",
             cursor="hand2",
-            relief=tk.FLAT,
+            relief=tk.GROOVE,
             borderwidth=0,
             activebackground="#0a5a5d"
         )
@@ -431,7 +440,7 @@ class DeviceExtractorGUI:
             bg=self.accent_blue,
             fg="white",
             cursor="hand2",
-            relief=tk.FLAT,
+            relief=tk.GROOVE,
             borderwidth=0,
             activebackground="#0a5a5d"
         )
@@ -445,7 +454,7 @@ class DeviceExtractorGUI:
             bg=self.accent_blue,
             fg="white",
             cursor="hand2",
-            relief=tk.FLAT,
+            relief=tk.GROOVE,
             borderwidth=0,
             activebackground="#0a5a5d"
         )
@@ -1006,24 +1015,19 @@ class DeviceExtractorGUI:
     
     def edit_selected_device(self):
         """Edit selected device"""
-        selected_items = [item for item, selected in self.device_selected.items() if selected]
-        
-        if not selected_items:
-            messagebox.showinfo("Info", "Please check one device to edit")
+        # Use tree selection, not just checked items
+        selected = self.tree.selection()
+        if not selected:
+            messagebox.showinfo("Info", "Please select a device row to edit (click to highlight)")
             return
-        
-        if len(selected_items) > 1:
+        if len(selected) > 1:
             messagebox.showwarning("Warning", "Please select only one device to edit")
             return
-        
-        item = selected_items[0]
+        item = selected[0]
         values = self.tree.item(item, "values")
-        # values: (checkbox, device_type, code, serial)
         current_device_type = values[1]
         current_code = values[2]
         current_serial = values[3]
-        
-        # Create edit popup
         self.show_edit_dialog(item, current_device_type, current_code, current_serial)
     
     def show_edit_dialog(self, item, device_type, code, serial):
@@ -1033,25 +1037,24 @@ class DeviceExtractorGUI:
         popup.geometry("400x300")
         popup.transient(self.root)
         popup.grab_set()
-        
+        popup.configure(bg=self.bg_dark)
         # Center the popup
         popup.update_idletasks()
         x = self.root.winfo_x() + (self.root.winfo_width() // 2) - (popup.winfo_width() // 2)
         y = self.root.winfo_y() + (self.root.winfo_height() // 2) - (popup.winfo_height() // 2)
         popup.geometry(f"+{x}+{y}")
-        
         tk.Label(
             popup,
             text="Edit Device Information",
             font=("Arial", 12, "bold"),
-            pady=15
+            pady=15,
+            bg=self.bg_dark,
+            fg=self.fg_primary
         ).pack()
-        
         # Device Type
-        type_frame = tk.Frame(popup, pady=10)
+        type_frame = tk.Frame(popup, pady=10, bg=self.bg_dark)
         type_frame.pack(fill=tk.X, padx=20)
-        
-        tk.Label(type_frame, text="Device Type:", font=("Arial", 10), width=12, anchor=tk.W).pack(side=tk.LEFT)
+        tk.Label(type_frame, text="Device Type:", font=("Arial", 10), width=12, anchor=tk.W, bg=self.bg_dark, fg=self.fg_primary).pack(side=tk.LEFT)
         type_combo = ttk.Combobox(
             type_frame,
             values=self.available_device_types,
@@ -1061,38 +1064,30 @@ class DeviceExtractorGUI:
         )
         type_combo.set(device_type)
         type_combo.pack(side=tk.LEFT, fill=tk.X, expand=True)
-        
         # Product Code
-        code_frame = tk.Frame(popup, pady=10)
+        code_frame = tk.Frame(popup, pady=10, bg=self.bg_dark)
         code_frame.pack(fill=tk.X, padx=20)
-        
-        tk.Label(code_frame, text="Code:", font=("Arial", 10), width=12, anchor=tk.W).pack(side=tk.LEFT)
-        code_entry = tk.Entry(code_frame, font=("Arial", 10))
+        tk.Label(code_frame, text="Code:", font=("Arial", 10), width=12, anchor=tk.W, bg=self.bg_dark, fg=self.fg_primary).pack(side=tk.LEFT)
+        code_entry = tk.Entry(code_frame, font=("Arial", 10), bg=self.bg_light, fg=self.fg_primary, insertbackground=self.fg_primary)
         code_entry.insert(0, code)
         code_entry.pack(side=tk.LEFT, fill=tk.X, expand=True)
-        
         # Serial Number
         serial_frame = tk.Frame(popup, pady=10, bg=self.bg_dark)
         serial_frame.pack(fill=tk.X, padx=20)
-        
         tk.Label(serial_frame, text="Serial:", font=("Arial", 10), width=12, anchor=tk.W, bg=self.bg_dark, fg=self.fg_primary).pack(side=tk.LEFT)
         serial_entry = tk.Entry(serial_frame, font=("Arial", 10), bg=self.bg_light, fg=self.fg_primary, insertbackground=self.fg_primary)
         serial_entry.insert(0, serial)
         serial_entry.pack(side=tk.LEFT, fill=tk.X, expand=True)
-        
         def on_save():
             new_device_type = type_combo.get()
             new_code = code_entry.get().strip()
             new_serial = serial_entry.get().strip()
-            
             if not new_device_type or new_device_type == "[Click to select device type]":
                 messagebox.showwarning("Warning", "Please select a device type")
                 return
-            
             if not new_serial:
                 messagebox.showwarning("Warning", "Serial number cannot be empty")
                 return
-            
             # Update the tree item
             values = list(self.tree.item(item, "values"))
             values[1] = new_device_type
@@ -1100,14 +1095,11 @@ class DeviceExtractorGUI:
             values[3] = new_serial
             self.tree.item(item, values=values)
             self.device_types[item] = new_device_type
-            
             self.status_label.config(text=f"✓ Updated {new_device_type}")
             popup.destroy()
-        
         # Buttons
         button_frame = tk.Frame(popup, pady=20, bg=self.bg_dark)
         button_frame.pack()
-        
         tk.Button(
             button_frame,
             text="Save",
@@ -1121,7 +1113,6 @@ class DeviceExtractorGUI:
             borderwidth=0,
             activebackground="#0a5a5d"
         ).pack(side=tk.LEFT, padx=5)
-        
         tk.Button(
             button_frame,
             text="Cancel",
