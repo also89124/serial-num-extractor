@@ -431,16 +431,21 @@ For development or customization:
 
 ## Version Information
 
-### Current Release: Version 1.2
-**Release Date:** December 4, 2025
+### Current Release: Version 1.3
+**Release Date:** December 8, 2025
 
 **Features:**
 - OCR-based device information extraction
 - Professional dark mode GUI interface
-- Vessel information management
+- Curved/rounded design for all major sections and input fields
+- Unified formatting for Vessel Name, Vessel Model, and SAP fields (bold, large, white labels, curved entries)
+- Improved contrast and readability throughout the UI
+- Multi-image preview with thumbnail gallery
+- Always-visible "Enlarge Image" button for maximized image viewing
+- Vessel model selection via dropdown (GS38, GTX, GT7, GT9, ALPHA 40, ALPHA 45, ALPHA 50, OMEGA47, XPD)
 - Device type classification system
 - Custom export formatting
-- Manual device entry and editing
+- Manual device and engine entry and editing
 - Batch device processing
 - Comprehensive documentation suite
 

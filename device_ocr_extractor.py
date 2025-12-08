@@ -135,7 +135,7 @@ class DeviceExtractorGUI:
         title_label = tk.Label(
             title_frame,
             text="Technohull Marine Device Serial Number Extractor",
-            font=("Arial", 16, "bold"),
+            font=("Arial", 12, "bold"),
             bg=self.bg_medium,
             fg=self.fg_primary,
             borderwidth=0,
@@ -164,120 +164,83 @@ class DeviceExtractorGUI:
         
         
         # Vessel information inputs
-        vessel_info_frame = tk.LabelFrame(
-            main_frame,
-            text="Vessel Information",
-            font=("Arial", 10, "bold"),
-            padx=12,
-            pady=12,
-            bg=self.bg_medium,
-            fg=self.fg_primary,
-            borderwidth=0,
-            highlightthickness=2,
-            highlightcolor=self.bg_light,
-            relief="ridge"
+        # Use customtkinter for curved vessel info frame
+        import customtkinter as ctk
+        vessel_info_frame = ctk.CTkFrame(
+            master=main_frame,
+            fg_color=self.bg_medium,
+            corner_radius=self.border_radius,
+            border_width=2,
+            border_color=self.bg_light
         )
         vessel_info_frame.pack(pady=12, fill=tk.X, padx=12)
-        
-        # Vessel Model
-        model_frame = tk.Frame(vessel_info_frame, bg=self.bg_medium, borderwidth=0, highlightthickness=0)
-        model_frame.pack(fill=tk.X, pady=5)
-        
-        model_label = tk.Label(
-            model_frame,
-            text="Model:",
-            font=("Arial", 10),
-            width=15,
-            anchor=tk.W,
-            bg=self.bg_medium,
-            fg=self.fg_primary
+        vessel_info_label = ctk.CTkLabel(
+            vessel_info_frame,
+            text="Vessel Information",
+            font=("Arial", 14, "bold"),
+            text_color=self.fg_primary,
+            anchor="w"
         )
-        model_label.pack(side=tk.LEFT, padx=5)
+        vessel_info_label.pack(fill="x", padx=10, pady=(10, 0))
         
-        style = ttk.Style()
-        style.theme_use("default")
-        style.configure("Dark.TCombobox",
-                        fieldbackground="#181818",
-                        background="#181818",
-                        foreground=self.fg_primary,
-                        font=("Arial", 12, "bold"))
-        self.vessel_model_entry = ttk.Combobox(
-            model_frame,
+        # Vessel Name Entry (curved)
+        name_row = ctk.CTkFrame(vessel_info_frame, fg_color="transparent")
+        name_row.pack(fill="x", padx=10, pady=(10, 0))
+        name_label = ctk.CTkLabel(name_row, text="Vessel Name:", font=("Arial", 16, "bold"), text_color="#FFFFFF", width=160, anchor="w")
+        name_label.pack(side="left", padx=(0, 12))
+        self.vessel_name_entry = ctk.CTkEntry(
+            name_row,
             font=("Arial", 12, "bold"),
-            values=[
-                "GT9",
-                "GTX",
-                "GT7",
-                "GS38",
-                "ALPHA 40",
-                "ALPHA 45",
-                "ALPHA 50",
-                "OMEGA 47",
-                "XPD"
-                
-            ],
-            width=38,
-            style="Dark.TCombobox"
+            width=400,
+            fg_color="#222222",
+            text_color=self.fg_primary,
+            border_color=self.bg_light,
+            border_width=2,
+            corner_radius=self.border_radius
         )
-        self.vessel_model_entry.pack(side=tk.LEFT, padx=5, fill=tk.X, expand=True)
-        self.vessel_model_entry.set("Select model...")
-        self.vessel_model_entry.config(foreground=self.fg_primary)
-        
-        # Vessel Name
-        name_frame = tk.Frame(vessel_info_frame, bg=self.bg_medium, borderwidth=0, highlightthickness=0)
-        name_frame.pack(fill=tk.X, pady=5)
-        
-        name_label = tk.Label(
-            name_frame,
-            text="Name:",
-            font=("Arial", 10),
-            width=15,
-            anchor=tk.W,
-            bg=self.bg_medium,
-            fg=self.fg_primary
-        )
-        name_label.pack(side=tk.LEFT, padx=5)
-        
-        self.vessel_name_entry = tk.Entry(
-            name_frame,
-            font=("Arial", 12, "bold"),
-            width=40,
-            bg="#222222",
-            fg=self.fg_primary,
-            insertbackground=self.fg_primary,
-            relief=tk.FLAT
-        )
-        self.vessel_name_entry.pack(side=tk.LEFT, padx=5, fill=tk.X, expand=True)
+        self.vessel_name_entry.pack(side="left", fill="x", expand=True)
         self.vessel_name_entry.insert(0, "e.g., Sea Explorer")
-        self.vessel_name_entry.config(fg=self.fg_secondary)
-        
-        # SAP Number
-        sap_frame = tk.Frame(vessel_info_frame, bg=self.bg_medium, borderwidth=0, highlightthickness=0)
-        sap_frame.pack(fill=tk.X, pady=5)
-        
-        sap_label = tk.Label(
-            sap_frame,
-            text="SAP:",
-            font=("Arial", 10),
-            width=15,
-            anchor=tk.W,
-            bg=self.bg_medium,
-            fg=self.fg_primary
+        self.vessel_name_entry.configure(text_color=self.fg_secondary)
+
+        # Vessel Model Dropdown (curved)
+        model_row = ctk.CTkFrame(vessel_info_frame, fg_color="transparent")
+        model_row.pack(fill="x", padx=10, pady=(10, 0))
+        model_label = ctk.CTkLabel(model_row, text="Vessel Model:", font=("Arial", 16, "bold"), text_color="#FFFFFF", width=160, anchor="w")
+        model_label.pack(side="left", padx=(0, 12))
+        self.vessel_model_entry = ctk.CTkComboBox(
+            model_row,
+            values=["GS38", "GTX", "GT7", "GT9", "ALPHA 40", "ALPHA 45", "ALPHA 50", "OMEGA47", "XPD"],
+            font=("Arial", 12),
+            fg_color="#e0e0e0",
+            text_color="#222222",
+            border_color=self.bg_light,
+            border_width=2,
+            corner_radius=self.border_radius,
+            width=400,
+            state="readonly"
         )
-        sap_label.pack(side=tk.LEFT, padx=5)
-        
-        self.sap_entry = tk.Entry(
-            sap_frame,
+        self.vessel_model_entry.set("Select model...")
+        self.vessel_model_entry.pack(side="left", fill="x", expand=True)
+
+        # SAP Entry (curved)
+        sap_row = ctk.CTkFrame(vessel_info_frame, fg_color="transparent")
+        sap_row.pack(fill="x", padx=10, pady=(10, 10))
+        sap_label = ctk.CTkLabel(sap_row, text="SAP:", font=("Arial", 16, "bold"), text_color="#FFFFFF", width=160, anchor="w")
+        sap_label.pack(side="left", padx=(0, 12))
+        self.sap_entry = ctk.CTkEntry(
+            sap_row,
             font=("Arial", 12, "bold"),
-            width=40,
-            bg="#222222",
-            fg=self.fg_primary,
-            insertbackground=self.fg_primary,
-            relief=tk.FLAT
+            width=400,
+            fg_color="#222222",
+            text_color=self.fg_primary,
+            border_color=self.bg_light,
+            border_width=2,
+            corner_radius=self.border_radius
         )
-        self.sap_entry.pack(side=tk.LEFT, padx=5, fill=tk.X, expand=True)
+        self.sap_entry.pack(side="left", fill="x", expand=True)
         self.sap_entry.insert(0, "e.g., 9100967")
-        self.sap_entry.config(fg=self.fg_secondary)
+        self.sap_entry.configure(text_color=self.fg_secondary)
+        
         
         # Bind events to clear placeholders
         self.vessel_model_entry.bind("<FocusIn>", lambda e: self._clear_combobox_placeholder(self.vessel_model_entry, "Select model..."))
@@ -346,20 +309,23 @@ class DeviceExtractorGUI:
         self.export_btn.pack(side=tk.LEFT, padx=5)
         
         # Image preview frame
-        preview_frame = tk.LabelFrame(
-            main_frame,
-            text="Image Preview",
-            font=("Arial", 10, "bold"),
-            padx=12,
-            pady=12,
-            bg=self.bg_medium,
-            fg=self.fg_primary,
-            borderwidth=0,
-            highlightthickness=2,
-            highlightcolor=self.bg_light,
-            relief="ridge"
+        import customtkinter as ctk
+        preview_frame = ctk.CTkFrame(
+            master=main_frame,
+            fg_color=self.bg_medium,
+            corner_radius=self.border_radius,
+            border_width=2,
+            border_color=self.bg_light
         )
-        preview_frame.pack(fill=tk.BOTH, expand=True, pady=12, padx=12)
+        preview_frame.pack(fill="both", expand=True, pady=12, padx=12)
+        preview_label = ctk.CTkLabel(
+            preview_frame,
+            text="Image Preview",
+            font=("Arial", 12, "bold"),
+            text_color=self.fg_primary,
+            anchor="w"
+        )
+        preview_label.pack(fill="x", padx=10, pady=(10, 0))
 
 
         # Main image preview
@@ -400,28 +366,7 @@ class DeviceExtractorGUI:
         self.current_image_index = 0
         
         # Results frame
-        results_frame = tk.LabelFrame(
-            main_frame,
-            text="Extracted Items (Devices & Engines) - Select items to export",
-            font=("Arial", 10, "bold"),
-            padx=12,
-            pady=12,
-            bg=self.bg_medium,
-            fg=self.fg_primary,
-            borderwidth=0,
-            highlightthickness=2,
-            highlightcolor=self.bg_light,
-            relief="ridge"
-        )
-        results_frame.pack(fill=tk.BOTH, expand=True, pady=12, padx=12)
-        
-        # Add device dropdown and button - for manual additions
-        add_device_frame = tk.Frame(results_frame, bg=self.bg_medium, borderwidth=0, highlightthickness=0)
-        add_device_frame.pack(fill=tk.X, pady=5)
-        tk.Label(add_device_frame, text="Add Device Manually:", font=("Arial", 9, "bold"), bg=self.bg_medium, fg=self.fg_primary).pack(side=tk.LEFT, padx=5)
-        add_device_frame = tk.Frame(results_frame, bg=self.bg_medium, borderwidth=0, highlightthickness=0)
-        add_device_frame.pack(fill=tk.X, pady=5)
-        # Results frame (must be defined before use)
+        # Results frame (single, lower section only)
         results_frame = tk.LabelFrame(
             main_frame,
             text="Extracted Items (Devices & Engines) - Select items to export",
