@@ -21,6 +21,15 @@ import threading
 class DeviceExtractorGUI:
     """GUI application for extracting device serials from images"""
 
+    # Map device names to standard codes
+    device_standard_codes = {
+        "AXIOM 2 PRO 12": "E70656",
+        "RAYMARINE RS 150": "E70310",
+        "RADAR QUANTUM 2 DOPPLER": "E70498",
+        "RAYMARINE AIS 700": "E70476",
+        "RAYMARINE RAY53 VHF": "E70524"
+    }
+
     def _on_mousewheel(self, event):
         # Windows uses event.delta, positive/negative for up/down
         self.main_canvas.yview_scroll(int(-1*(event.delta/120)), "units")
@@ -184,13 +193,14 @@ class DeviceExtractorGUI:
             values=[
                 "GT9",
                 "GTX",
+                "GT7",
+                "GS38",
                 "ALPHA 40",
                 "ALPHA 45",
                 "ALPHA 50",
                 "OMEGA 47",
-                "XPD",
-                "GT7",
-                "GS38"
+                "XPD"
+                
             ],
             width=38,
             style="Dark.TCombobox"
@@ -391,6 +401,26 @@ class DeviceExtractorGUI:
         add_device_frame = tk.Frame(results_frame, bg=self.bg_medium, borderwidth=0, highlightthickness=0)
         add_device_frame.pack(fill=tk.X, pady=5)
         tk.Label(add_device_frame, text="Add Device Manually:", font=("Arial", 9, "bold"), bg=self.bg_medium, fg=self.fg_primary).pack(side=tk.LEFT, padx=5)
+        add_device_frame = tk.Frame(results_frame, bg=self.bg_medium, borderwidth=0, highlightthickness=0)
+        add_device_frame.pack(fill=tk.X, pady=5)
+        # Results frame (must be defined before use)
+        results_frame = tk.LabelFrame(
+            main_frame,
+            text="Extracted Items (Devices & Engines) - Select items to export",
+            font=("Arial", 10, "bold"),
+            padx=10,
+            pady=10,
+            bg=self.bg_medium,
+            fg=self.fg_primary,
+            borderwidth=0,
+            highlightthickness=0
+        )
+        results_frame.pack(fill=tk.BOTH, expand=True, pady=10)
+
+        # Add device dropdown and button - for manual additions
+        add_device_frame = tk.Frame(results_frame, bg=self.bg_medium, borderwidth=0, highlightthickness=0)
+        add_device_frame.pack(fill=tk.X, pady=5)
+        tk.Label(add_device_frame, text="Add Device Manually:", font=("Arial", 9, "bold"), bg=self.bg_medium, fg=self.fg_primary).pack(side=tk.LEFT, padx=5)
         self.device_dropdown_add = ttk.Combobox(
             add_device_frame,
             values=[
@@ -400,15 +430,18 @@ class DeviceExtractorGUI:
                 "GMDSS",
                 "RAYMARINE AIS 700",
                 "RADAR QUANTUM 2",
+                "RADAR QUANTUM 2 DOPPLER",
                 "THERMAL CAMERA",
                 "RAYMARINE RAY53 VHF",
                 "RAYMARINE RS 150",
+                "CONNECT 50",
                 "OTHER DEVICE"
             ],
             state="readonly",
             width=25,
             font=("Arial", 9)
         )
+        self.device_dropdown_add.bind("<<ComboboxSelected>>", self._on_device_dropdown_selected)
         self.device_dropdown_add.pack(side=tk.LEFT, padx=5)
         # Product code entry
         tk.Label(add_device_frame, text="Code:", font=("Arial", 9), bg=self.bg_medium, fg=self.fg_primary).pack(side=tk.LEFT, padx=5)
@@ -472,6 +505,8 @@ class DeviceExtractorGUI:
                 "350 V10 MERCURY",
                 "400 V10 MERCURY",
                 "400R V10 MERCURY",
+                "500 MERCURY",
+                "500R MERCURY",
                 "600 MERCURY",
                 "300 YAMAHA",
                 "350 YAMAHA",
@@ -558,6 +593,7 @@ class DeviceExtractorGUI:
             "THERMAL CAMERA",
             "RAYMARINE RAY53 VHF",
             "RAYMARINE RS 150",
+            "CONNECT 50",
             "OTHER DEVICE"
         ]
         
