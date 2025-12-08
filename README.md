@@ -136,7 +136,7 @@ The system automatically identifies and extracts the following data fields:
 - THERMAL CAMERA
 - RAYMARINE RAY53 VHF
 - RAYMARINE RS 150
-- ENGINE
+- OTHER DEVICES
 
 **Example Output**
 ```
@@ -431,7 +431,7 @@ For development or customization:
 
 ## Version Information
 
-### Current Release: Version 1.1
+### Current Release: Version 1.2
 **Release Date:** December 4, 2025
 
 **Features:**

@@ -402,7 +402,8 @@ class DeviceExtractorGUI:
                 "RADAR QUANTUM 2",
                 "THERMAL CAMERA",
                 "RAYMARINE RAY53 VHF",
-                "RAYMARINE RS 150"
+                "RAYMARINE RS 150",
+                "OTHER DEVICE"
             ],
             state="readonly",
             width=25,
@@ -467,13 +468,15 @@ class DeviceExtractorGUI:
         self.engine_dropdown_add = ttk.Combobox(
             engine_frame,
             values=[
-                "300 MERCURY NO ELECTRIC STEERING",
+                "300 MERCURY",
                 "350 V10 MERCURY",
                 "400 V10 MERCURY",
                 "400R V10 MERCURY",
                 "600 MERCURY",
                 "300 YAMAHA",
                 "350 YAMAHA",
+                "450 YAMAHA",
+                "250 YANMAR",
                 "370 YANMAR"
             ],
             state="readonly",
@@ -551,11 +554,11 @@ class DeviceExtractorGUI:
             "AXIOM 2 PRO 16",
             "GMDSS",
             "RAYMARINE AIS 700",
-            "RADAR QUANTUM 2",
+            "RADAR QUANTUM 2 DOPPLER",
             "THERMAL CAMERA",
             "RAYMARINE RAY53 VHF",
             "RAYMARINE RS 150",
-            "ENGINE"
+            "OTHER DEVICE"
         ]
         
         # Scrollbar
@@ -613,10 +616,8 @@ class DeviceExtractorGUI:
         if file_paths:
             self.image_paths = list(file_paths)
             self.current_image_index = 0
-            # Backward compatibility for single image usage
             self.image_path = self.image_paths[0]
-            # Display the first image
-            self.display_image(self.image_paths[0])
+            self.display_image(self.image_path)
             self.extract_btn.config(state=tk.NORMAL)
             loaded_count = len(self.image_paths)
             if loaded_count == 1:
@@ -658,8 +659,9 @@ class DeviceExtractorGUI:
                 img.thumbnail(thumb_size, Image.Resampling.LANCZOS)
                 thumb = ImageTk.PhotoImage(img)
                 self.thumbnail_images.append(thumb)
+                border_frame = tk.Frame(self.thumbnails_frame, bg=self.bg_medium, borderwidth=0, highlightthickness=0)
                 btn = tk.Label(
-                    self.thumbnails_frame,
+                    border_frame,
                     image=thumb,
                     bg=self.bg_medium,
                     cursor="hand2",
@@ -667,9 +669,7 @@ class DeviceExtractorGUI:
                     highlightthickness=0,
                     relief=tk.FLAT
                 )
-                # Custom rounded border using a frame
-                border_frame = tk.Frame(self.thumbnails_frame, bg=self.bg_medium, borderwidth=0, highlightthickness=0)
-                btn.pack(in_=border_frame, padx=0, pady=0)
+                btn.pack(padx=0, pady=0)
                 border_frame.pack(side=tk.LEFT, padx=4, pady=2)
                 # Draw highlight border for selected
                 if idx == self.current_image_index:
@@ -686,7 +686,6 @@ class DeviceExtractorGUI:
         self.current_image_index = idx
         self.image_path = self.image_paths[idx]
         self.display_image(self.image_path)
-        # Redraw thumbnails to update highlight
         self.show_thumbnails()
 
     def enlarge_image(self):
@@ -843,8 +842,8 @@ class DeviceExtractorGUI:
             return "RAYMARINE RAY53 VHF"
         elif "RS" in product_upper and "150" in product_upper:
             return "RAYMARINE RS 150"
-        elif "ENGINE" in product_upper:
-            return "ENGINE"
+        elif "OTHER OTHER" in product_upper:
+            return "OTHER DEVICE"
         
         return None
     
