@@ -19,16 +19,28 @@ import threading
 
 
 class DeviceExtractorGUI:
+
     """GUI application for extracting device serials from images"""
 
-    # Map device names to standard codes
-    device_standard_codes = {
-        "AXIOM 2 PRO 12": "E70656",
-        "RAYMARINE RS 150": "E70310",
-        "RADAR QUANTUM 2 DOPPLER": "E70498",
-        "RAYMARINE AIS 700": "E70476",
-        "RAYMARINE RAY53 VHF": "E70524"
-    }
+    def _on_device_dropdown_selected(self, event=None):
+        device = self.device_dropdown_add.get()
+        code = getattr(self, 'device_standard_codes', {}).get(device)
+        if code:
+            self.product_code_entry.delete(0, tk.END)
+            self.product_code_entry.insert(0, code)
+        else:
+            self.product_code_entry.delete(0, tk.END)
+
+    # Map device names to standard codes (instance variable)
+    def _init_device_standard_codes(self):
+        self.device_standard_codes = {
+            "AXIOM 2 PRO 12": "E70656",
+            "RAYMARINE RS 150": "E70310",
+            "RADAR QUANTUM 2 DOPPLER": "E70498",
+            "RAYMARINE AIS 700": "E70476",
+            "RAYMARINE RAY53 VHF": "E70524"
+        }
+
 
     def _on_mousewheel(self, event):
         # Windows uses event.delta, positive/negative for up/down
@@ -46,6 +58,7 @@ class DeviceExtractorGUI:
         self.extracted_devices = []
         self.reader = None
         self.is_loading = False
+        self._init_device_standard_codes()
         self.setup_ui()
         
     def add_manual_engine(self):
@@ -78,15 +91,15 @@ class DeviceExtractorGUI:
         
         # Dark mode colors
         # Black-friendly theme
-        self.bg_dark = "#111111"  # true black
-        self.bg_medium = "#181818"  # near black
-        self.bg_light = "#222222"  # dark gray
+        self.bg_dark = "#00040f"  # background
+        self.bg_medium = "#101a33"
+        self.bg_light = "#101a33"
         self.fg_primary = "#f8f8f8"  # off-white
         self.fg_secondary = "#888888"  # muted gray
-        self.accent_blue = "#1a8cff"  # vivid blue
-        self.accent_green = "#14cc60"
-        self.accent_red = "#e74c3c"
-        self.accent_orange = "#ff8c42"
+        self.accent_blue = "#e0e0e0"  # light grey for all buttons
+        self.accent_green = "#e0e0e0"
+        self.accent_red = "#e0e0e0"
+        self.accent_orange = "#e0e0e0"
         self.border_radius = 18  # px for more rounded corners
         
         # Set dark background for root
@@ -101,10 +114,9 @@ class DeviceExtractorGUI:
             pass
         
         # Title
-        title_frame = tk.Frame(self.root, bg=self.bg_medium, height=80, highlightbackground=self.bg_light, highlightthickness=1)
-        title_frame.pack(fill=tk.X)
+        title_frame = tk.Frame(self.root, bg=self.bg_medium, height=80, highlightbackground=self.bg_light, highlightthickness=2, bd=0, relief="ridge")
+        title_frame.pack(fill=tk.X, padx=12, pady=10)
         title_frame.pack_propagate(False)
-        title_frame.configure(borderwidth=0)
         
         # Try to load logo
         try:
@@ -156,14 +168,16 @@ class DeviceExtractorGUI:
             main_frame,
             text="Vessel Information",
             font=("Arial", 10, "bold"),
-            padx=10,
-            pady=10,
+            padx=12,
+            pady=12,
             bg=self.bg_medium,
             fg=self.fg_primary,
             borderwidth=0,
-            highlightthickness=0
+            highlightthickness=2,
+            highlightcolor=self.bg_light,
+            relief="ridge"
         )
-        vessel_info_frame.pack(pady=10, fill=tk.X)
+        vessel_info_frame.pack(pady=12, fill=tk.X, padx=12)
         
         # Vessel Model
         model_frame = tk.Frame(vessel_info_frame, bg=self.bg_medium, borderwidth=0, highlightthickness=0)
@@ -285,47 +299,47 @@ class DeviceExtractorGUI:
             command=self.upload_image,
             font=("Arial", 11, "bold"),
             bg=self.accent_blue,
-            fg="white",
+            fg="#222222",
             padx=30,
             pady=10,
             cursor="hand2",
             relief=tk.FLAT,
-            activebackground="#0a5a5d",
+            activebackground="#e0e0e0",
             borderwidth=0
         )
         self.upload_btn.pack(side=tk.LEFT, padx=5)
-        
+
         self.extract_btn = tk.Button(
             button_frame,
             text="🔍 Extract Devices & Engines",
             command=self.extract_devices,
             font=("Arial", 11, "bold"),
             bg=self.accent_blue,
-            fg="white",
+            fg="#222222",
             padx=30,
             pady=10,
             cursor="hand2",
             relief=tk.FLAT,
             state=tk.DISABLED,
-            activebackground="#0a5a5d",
+            activebackground="#e0e0e0",
             borderwidth=0,
             disabledforeground="#7f8c8d"
         )
         self.extract_btn.pack(side=tk.LEFT, padx=5)
-        
+
         self.export_btn = tk.Button(
             button_frame,
             text="💾 Export to TXT",
             command=self.export_results,
             font=("Arial", 11, "bold"),
             bg=self.accent_blue,
-            fg="white",
+            fg="#222222",
             padx=30,
             pady=10,
             cursor="hand2",
             relief=tk.FLAT,
             state=tk.DISABLED,
-            activebackground="#0a5a5d",
+            activebackground="#e0e0e0",
             borderwidth=0,
             disabledforeground="#7f8c8d"
         )
@@ -336,14 +350,16 @@ class DeviceExtractorGUI:
             main_frame,
             text="Image Preview",
             font=("Arial", 10, "bold"),
-            padx=10,
-            pady=10,
+            padx=12,
+            pady=12,
             bg=self.bg_medium,
             fg=self.fg_primary,
             borderwidth=0,
-            highlightthickness=0
+            highlightthickness=2,
+            highlightcolor=self.bg_light,
+            relief="ridge"
         )
-        preview_frame.pack(fill=tk.BOTH, expand=True, pady=10)
+        preview_frame.pack(fill=tk.BOTH, expand=True, pady=12, padx=12)
 
 
         # Main image preview
@@ -365,13 +381,13 @@ class DeviceExtractorGUI:
             command=self.enlarge_image,
             font=("Arial", 10, "bold"),
             bg=self.accent_blue,
-            fg="white",
+            fg="#222222",
             padx=10,
             pady=5,
             cursor="hand2",
             relief=tk.GROOVE,
             borderwidth=0,
-            activebackground="#0a5a5d",
+            activebackground="#e0e0e0",
             highlightthickness=0
         )
         self.enlarge_btn.pack(pady=(0, 10))
@@ -388,14 +404,16 @@ class DeviceExtractorGUI:
             main_frame,
             text="Extracted Items (Devices & Engines) - Select items to export",
             font=("Arial", 10, "bold"),
-            padx=10,
-            pady=10,
+            padx=12,
+            pady=12,
             bg=self.bg_medium,
             fg=self.fg_primary,
             borderwidth=0,
-            highlightthickness=0
+            highlightthickness=2,
+            highlightcolor=self.bg_light,
+            relief="ridge"
         )
-        results_frame.pack(fill=tk.BOTH, expand=True, pady=10)
+        results_frame.pack(fill=tk.BOTH, expand=True, pady=12, padx=12)
         
         # Add device dropdown and button - for manual additions
         add_device_frame = tk.Frame(results_frame, bg=self.bg_medium, borderwidth=0, highlightthickness=0)
@@ -451,20 +469,20 @@ class DeviceExtractorGUI:
         tk.Label(add_device_frame, text="Serial:", font=("Arial", 9), bg=self.bg_medium, fg=self.fg_primary).pack(side=tk.LEFT, padx=5)
         self.serial_entry = tk.Entry(add_device_frame, width=15, font=("Arial", 9), bg=self.bg_light, fg=self.fg_primary, insertbackground=self.fg_primary)
         self.serial_entry.pack(side=tk.LEFT, padx=5)
-        # Add button
         add_btn = tk.Button(
             add_device_frame,
             text="➕ Add",
             command=self.add_manual_device,
             font=("Arial", 9),
             bg=self.accent_blue,
-            fg="white",
+            fg="#222222",
             cursor="hand2",
             relief=tk.GROOVE,
             borderwidth=0,
-            activebackground="#0a5a5d"
+            activebackground="#e0e0e0"
         )
         add_btn.pack(side=tk.LEFT, padx=5)
+
         # Edit button
         edit_btn = tk.Button(
             add_device_frame,
@@ -472,13 +490,14 @@ class DeviceExtractorGUI:
             command=self.edit_selected_device,
             font=("Arial", 9),
             bg=self.accent_blue,
-            fg="white",
+            fg="#222222",
             cursor="hand2",
             relief=tk.GROOVE,
             borderwidth=0,
-            activebackground="#0a5a5d"
+            activebackground="#e0e0e0"
         )
         edit_btn.pack(side=tk.LEFT, padx=5)
+
         # Remove button
         remove_btn = tk.Button(
             add_device_frame,
@@ -486,14 +505,13 @@ class DeviceExtractorGUI:
             command=self.remove_selected_device,
             font=("Arial", 9),
             bg=self.accent_blue,
-            fg="white",
+            fg="#222222",
             cursor="hand2",
             relief=tk.GROOVE,
             borderwidth=0,
-            activebackground="#0a5a5d"
+            activebackground="#e0e0e0"
         )
         remove_btn.pack(side=tk.LEFT, padx=5)
-
         # Engine section for manual addition
         engine_frame = tk.Frame(results_frame, bg=self.bg_medium, borderwidth=0, highlightthickness=0)
         engine_frame.pack(fill=tk.X, pady=5)
@@ -531,11 +549,11 @@ class DeviceExtractorGUI:
             command=self.add_manual_engine,
             font=("Arial", 9),
             bg=self.accent_blue,
-            fg="white",
+            fg="#222222",
             cursor="hand2",
             relief=tk.FLAT,
             borderwidth=0,
-            activebackground="#0a5a5d"
+            activebackground="#e0e0e0"
         )
         engine_add_btn.pack(side=tk.LEFT, padx=5)
         
